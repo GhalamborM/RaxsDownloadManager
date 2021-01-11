@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WDM.Extensions\WDM.Extensions.csproj" />
+    <ProjectReference Include="..\WDM.Helpers\WDM.Helpers.csproj" />
   </ItemGroup>
 
 </Project>
