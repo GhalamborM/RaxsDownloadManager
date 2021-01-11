@@ -2,11 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netframework461</TargetFramework>
+    <Description>UIExtensions package for creating UI Extension for Windows Download Manager [ WDM ] app</Description>
   </PropertyGroup>
-
-  <ItemGroup>
-    <!--<PackageReference Include="WindowsBase" Version="4.6.1055" />-->
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\WDM.Extensions\WDM.Extensions.csproj" />

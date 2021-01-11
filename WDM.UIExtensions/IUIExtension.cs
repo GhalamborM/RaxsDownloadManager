@@ -1,7 +1,9 @@
-﻿namespace WDM.UIExtensions
+﻿using System.Windows.Controls;
+
+namespace WDM.UIExtensions
 {
     public interface IUIExtension
     {
-        Control
+        Control[] Controls { get; }
     }
 }
