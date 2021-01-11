@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using WDM.Helpers;
 namespace WDM.Downloader.Storage
 {
     public class FileStorage : IFileStorage
     {
         public FileStorage(string url, string path, string refererUrl)
         {
-            Name = System.IO.Path.GetFileName(url.ToString());
+            Name = url.GetFileName();
             Extension = System.IO.Path.GetExtension(url);
             RefererUrl = refererUrl;
             Path = path;
