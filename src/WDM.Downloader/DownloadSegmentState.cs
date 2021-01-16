@@ -1,6 +1,6 @@
 ﻿namespace WDM.Downloader
 {
-    public enum FileSegmentState
+    public enum DownloadSegmentState
     {
         None,
         Connecting,
