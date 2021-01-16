@@ -22,7 +22,7 @@ namespace WDM.Downloaders.Downloads
         /// <param name="uri">Uri</param>
         public static async Task<DownloadInfo> GetInfoAsync(Uri uri)
         {
-            using (var client = new HttpClient())
+            using (var client = new HttpClient { Timeout = TimeSpan.FromSeconds(40) })
             using (var request = new HttpRequestMessage(HttpMethod.Head, uri))
             using (var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead))
             // Use ResponseHeadersRead to prevent a exception related to files larger than 2GB.
@@ -54,7 +54,7 @@ namespace WDM.Downloaders.Downloads
         }
         private static async Task<HttpStatusCode> GetStatusCodeAsync(Uri uri)
         {
-            using (var client = new HttpClient())
+            using (var client = new HttpClient { Timeout = TimeSpan.FromSeconds(40) })
             using (var request = new HttpRequestMessage(HttpMethod.Head, uri))
             using (var response = await client.SendAsync(request)) 
                 // since our file is lower than 2GB we can avoid ResponseHeadersRead part
