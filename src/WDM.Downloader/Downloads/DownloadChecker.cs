@@ -9,12 +9,24 @@ namespace WDM.Downloader.Downloads
 {
     static class DownloadChecker
     {
-        public static async Task<DownloadInfo> GetInfoAsync(string url)
+        /// <summary>
+        ///     Get a tiny information related to a URL link
+        /// </summary>
+        /// <param name="url">Url</param>
+        public static async Task<DownloadInfo> GetInfoAsync(string url) =>
+            await GetInfoAsync(new Uri(url));
+
+        /// <summary>
+        ///     Get a tiny information related to a URI link
+        /// </summary>
+        /// <param name="uri">Uri</param>
+        /// <returns></returns>
+        public static async Task<DownloadInfo> GetInfoAsync(Uri uri)
         {
             using (var client = new HttpClient())
-            using (var request = new HttpRequestMessage(HttpMethod.Head, url))
+            using (var request = new HttpRequestMessage(HttpMethod.Head, uri))
             using (var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead))
-            // Using ResponseHeadersRead to prevent a exception related to files larger than 2GB 
+            // Using ResponseHeadersRead to prevent a exception related to files larger than 2GB.
             // Setting client.MaxResponseContentBufferSize to long.MaxValue will cause a exception! 2147483647 is the limit
             {
                 var content = response.Content;
@@ -31,7 +43,7 @@ namespace WDM.Downloader.Downloads
                     if (downloadInfo.ContentLength.Value <= int.MaxValue)
                     {
                         downloadInfo.CanDetectPartialContent = true;
-                        var statusCode = await GetStatusCodeAsync(url).ConfigureAwait(false);
+                        var statusCode = await GetStatusCodeAsync(uri).ConfigureAwait(false);
                         downloadInfo.StatusCode = statusCode;
                         downloadInfo.PartialContent = statusCode == HttpStatusCode.PartialContent;
                     }
@@ -41,10 +53,10 @@ namespace WDM.Downloader.Downloads
                 return downloadInfo;
             }
         }
-        private static async Task<HttpStatusCode> GetStatusCodeAsync(string url)
+        private static async Task<HttpStatusCode> GetStatusCodeAsync(Uri uri)
         {
             using (var client = new HttpClient())
-            using (var request = new HttpRequestMessage(HttpMethod.Head, url))
+            using (var request = new HttpRequestMessage(HttpMethod.Head, uri))
             using (var response = await client.SendAsync(request)) 
                 // since our file is lower than 2GB we can avoid ResponseHeadersRead part
                 // now we can actually get the partial content, if possible
