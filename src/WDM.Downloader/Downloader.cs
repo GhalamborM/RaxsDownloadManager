@@ -20,7 +20,6 @@ namespace WDM.Downloaders
                 throw new NotSupportedSchemeException($"'{uri.Scheme}' scheme is not supported");
             Uri = uri;
             DownloadInfo = await DownloadChecker.GetInfoAsync(uri);
-
         }
     }
 }
