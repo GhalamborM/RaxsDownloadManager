@@ -31,7 +31,7 @@ namespace WDM.Downloader.Downloads
                     if (downloadInfo.ContentLength.Value <= int.MaxValue)
                     {
                         downloadInfo.CanDetectPartialContent = true;
-                        var statusCode = await GetStatusCode(url).ConfigureAwait(false);
+                        var statusCode = await GetStatusCodeAsync(url).ConfigureAwait(false);
                         downloadInfo.StatusCode = statusCode;
                         downloadInfo.PartialContent = statusCode == HttpStatusCode.PartialContent;
                     }
@@ -41,7 +41,7 @@ namespace WDM.Downloader.Downloads
                 return downloadInfo;
             }
         }
-        private static async Task<HttpStatusCode> GetStatusCode(string url)
+        private static async Task<HttpStatusCode> GetStatusCodeAsync(string url)
         {
             using (var client = new HttpClient())
             using (var request = new HttpRequestMessage(HttpMethod.Head, url))
