@@ -20,7 +20,6 @@ namespace WDM.Downloader.Downloads
         ///     Get a tiny information related to a URI link
         /// </summary>
         /// <param name="uri">Uri</param>
-        /// <returns></returns>
         public static async Task<DownloadInfo> GetInfoAsync(Uri uri)
         {
             using (var client = new HttpClient())
