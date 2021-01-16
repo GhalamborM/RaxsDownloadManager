@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace WDM.Downloader.Storage
+namespace WDM.Downloaders.Storage
 {
     public interface IFileStorage
     {

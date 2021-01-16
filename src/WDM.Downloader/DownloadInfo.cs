@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Net;
 
-namespace WDM.Downloader
+namespace WDM.Downloaders
 {
     public struct DownloadInfo
     {

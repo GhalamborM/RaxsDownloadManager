@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace WDM.Downloader
+namespace WDM.Downloaders
 {
     public class DownloadSegment
     {

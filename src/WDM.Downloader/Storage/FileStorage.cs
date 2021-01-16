@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using WDM.Helpers;
-namespace WDM.Downloader.Storage
+namespace WDM.Downloaders.Storage
 {
     public class FileStorage : IFileStorage
     {

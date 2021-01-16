@@ -5,7 +5,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Threading;
 
-namespace WDM.Downloader.Streams
+namespace WDM.Downloaders.Streams
 {
     public class ConcatenatedStream : Stream
     {

@@ -5,17 +5,17 @@ VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WDM", "WDM\WDM.csproj", "{2FB3D936-6532-4E39-BF96-4F700A6701BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WDM.Downloader", "WDM.Downloader\WDM.Downloader.csproj", "{A171C778-D699-4894-85E3-95F66938532E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WDM.Downloaders", "WDM.Downloader\WDM.Downloaders.csproj", "{A171C778-D699-4894-85E3-95F66938532E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WDM.Extensions", "WDM.Extensions\WDM.Extensions.csproj", "{F276D141-C3CD-4E1F-8EF3-645E02BCCE5A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WDM.Extensions", "WDM.Extensions\WDM.Extensions.csproj", "{F276D141-C3CD-4E1F-8EF3-645E02BCCE5A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WDM.UIExtensions", "WDM.UIExtensions\WDM.UIExtensions.csproj", "{619749F9-0F02-45FA-8BAC-6A576C13FF34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WDM.UIExtensions", "WDM.UIExtensions\WDM.UIExtensions.csproj", "{619749F9-0F02-45FA-8BAC-6A576C13FF34}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{3D27C65D-A8AE-4B57-AB43-731492BCB0A3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{6F213B6B-3A87-4AA3-8ED6-5906B03856D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WDM.Helpers", "WDM.Helpers\WDM.Helpers.csproj", "{2EE7C48E-F87B-4524-BB84-324B732E9BC1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WDM.Helpers", "WDM.Helpers\WDM.Helpers.csproj", "{2EE7C48E-F87B-4524-BB84-324B732E9BC1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

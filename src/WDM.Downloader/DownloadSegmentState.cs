@@ -1,4 +1,4 @@
-﻿namespace WDM.Downloader
+﻿namespace WDM.Downloaders
 {
     public enum DownloadSegmentState
     {

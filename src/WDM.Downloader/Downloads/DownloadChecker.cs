@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WDM.Downloader.Downloads
+namespace WDM.Downloaders.Downloads
 {
     static class DownloadChecker
     {
