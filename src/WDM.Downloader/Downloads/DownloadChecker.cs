@@ -25,7 +25,7 @@ namespace WDM.Downloader.Downloads
             using (var client = new HttpClient())
             using (var request = new HttpRequestMessage(HttpMethod.Head, uri))
             using (var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead))
-            // Using ResponseHeadersRead to prevent a exception related to files larger than 2GB.
+            // Use ResponseHeadersRead to prevent a exception related to files larger than 2GB.
             // Setting client.MaxResponseContentBufferSize to long.MaxValue will cause a exception! 2147483647 is the limit
             {
                 var content = response.Content;
