@@ -15,5 +15,9 @@ namespace WDM.Downloaders.Downloads
 
         static public HttpClientHandler GetClientHandler(IWebProxy proxy = null) =>
             new HttpClientHandler { Proxy = proxy, UseProxy = proxy != null };
+
+        static public HttpRequestMessage GetRequest(Uri uri, HttpMethod method = null) =>
+            new HttpRequestMessage(method ?? HttpMethod.Get, uri);
+
     }
 }
