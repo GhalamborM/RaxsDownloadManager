@@ -94,5 +94,23 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WDM.Downloader\WDM.Downloaders.csproj">
+      <Project>{a171c778-d699-4894-85e3-95f66938532e}</Project>
+      <Name>WDM.Downloaders</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WDM.Extensions\WDM.Extensions.csproj">
+      <Project>{f276d141-c3cd-4e1f-8ef3-645e02bcce5a}</Project>
+      <Name>WDM.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WDM.Helpers\WDM.Helpers.csproj">
+      <Project>{2ee7c48e-f87b-4524-bb84-324b732e9bc1}</Project>
+      <Name>WDM.Helpers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WDM.UIExtensions\WDM.UIExtensions.csproj">
+      <Project>{619749f9-0f02-45fa-8bac-6a576c13ff34}</Project>
+      <Name>WDM.UIExtensions</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
