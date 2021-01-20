@@ -11,7 +11,7 @@ namespace WDM.Downloaders.Downloads
     {
         static public TimeSpan GetDefaultTimeout() => TimeSpan.FromSeconds(30);
 
-        static public HttpClient GetClient(TimeSpan timeout = default, HttpClientHandler clientHandler = null) =>
+        static public HttpClient GetClient(HttpClientHandler clientHandler = null, TimeSpan timeout = default) =>
             new HttpClient(clientHandler ?? GetClientHandler()) { Timeout = timeout == default ? GetDefaultTimeout() : timeout };
 
         static public HttpClientHandler GetClientHandler(IWebProxy proxy = null) =>
