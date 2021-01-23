@@ -30,6 +30,7 @@ Hala chera farsi type nakardam? chon farsi type kardane man ye khorde kond hast 
 [Rahe hal 2] =>		Rahe hale manteghi ke hameye downloader haye ma'rof estefade mikonan ine ke ye requeste GET ba range 0 ta 255 byte mifrestan.
 	Injori bedone exception ham header ro mikhone ham stream e downloadi ke 255 byte hast az server khonde mishe.
 
+
 [Soal 1] Hala chera mian yekbar darkhaste GET e khali mifrestan bad shoro mikonan download?
 
 [Javab] ine ke ba requeste GET e avale kar ye seri value ha ro az server migiran, nemonash `ContentLength` ya hamon hajme file downloadi 
@@ -44,6 +45,7 @@ Hala chera farsi type nakardam? chon farsi type kardane man ye khorde kond hast 
 	`ContentDisposition.ModificationDate` => Tarikhe e modify shodane file, in bishtar be darde download haye `Partial` mikhore ke age, tuye
 		server file e downloadi hajmesh avaz shod ya ye balaei saresh omad, ma motevajeh beshim va koliye part haye downloadi ro hazf konim va
 		az sefr shoro be dl konim.
+
 
 [Soal 2] Manzoram az in harf ke bala goftam chie? `range 0 ta 255 byte mifrestan`.
 
