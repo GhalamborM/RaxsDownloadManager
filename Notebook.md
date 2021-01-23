@@ -11,13 +11,14 @@ Hala chera farsi type nakardam? chon farsi type kardane man ye khorde kond hast 
    estefade kard, ta khodkar dispose beshe. Taghriban har classi ke marbot be HttpClient hast Disposable hastan, pas dispose kardaneshon ro be hich ounvan
    yadeton nare. 
 
-
-2. HttpClient vase file haei ke bish az 2GB yani 2147483647 bytes [meghdare int.MaxValue hast] dare Exception mide, hata age requeste HEAD befresti.
-[Dalil] =>			Dalilesh ine ke HttpClient ye bug dare ke hata age vase url ha darkhaste HEAD ham befresti, bazam say mikone file ro GET kone.
+| | 
+| ------ |
+| 2. HttpClient vase file haei ke bish az 2GB yani 2147483647 bytes [meghdare int.MaxValue hast] dare Exception mide, hata age requeste HEAD befresti. | 
+| [Dalil] =>			Dalilesh ine ke HttpClient ye bug dare ke hata age vase url ha darkhaste HEAD ham befresti, bazam say mikone file ro GET kone.
 	hata age darkhaste GET e khali ham befresti bazam exception mide, dalilesh ine ke HttpClient ejaze nemide ke bish az 2GB ro berizi tuye Memory.
 	shayad be zehneton berese ke property e	`MaxResponseContentBufferSize` e HttpClient long hast pas mishe	`long.MaxValue` behesh dad. ke bayad arz konam
 	doroste ke long hast ama vaghti bekhaid ye adad ke bish az int.MaxValue bashe ro tanzim konid, beheton Exception mide ke nemitonid bish az 2147483647
-	tanzim konid.
+	tanzim konid. | 
 [Rahe hal 1] =>		Ye rahe hal ine ke az `HttpCompletionOption.ResponseHeadersRead` estefade kard injori HttpClient faghat header haye khali ro mikhone
 	va be hich ounvan nemiad Stream e daryafti ro read kone [ ta zamani ke khodemon biaim readesh ro start konim]. 
 	Moshkele in rahe hal ine ke be hich ounvan nemishe fahmid ke ye file `Partial` ya `206` hast ya na, va hamishe javab `OK` ya `200`.
