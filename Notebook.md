@@ -37,11 +37,15 @@ Hala chera farsi type nakardam? chon farsi type kardane man ye khorde kond hast 
 	Ye dalile dg ke dare ine ke ba range 0 ta 255, mishe taskhis dad ke ye file `Partial` hast ya na. 
 	Ye nokte ke bayad dar nazar dashte bashid ine ke ye download mitone `Partial` bashe ama size e downloadi naamoshakhas bashe.
 	Hala shayad soali ke baraton pish biad ine ke downloader ha dg chia ro az server migiran? 
-	`ContentType` => Ke moshakhas mikone type e downloadi chi hast va mime type e file ro moshakhas mikone.
-	`ContentDisposition.Size` => Az in yeki ham mishe baraye daryafte hajme file estefade kard ama mamolan `null` hast, `ContentDisposition` ham mitone `null` bashe.
-	`ContentDisposition.FileName` => File name ei ke az tarafe server mitone tanzim shode bashe va ba gereftane name az linke fili ke ma darim
+	
+`ContentType` => Ke moshakhas mikone type e downloadi chi hast va mime type e file ro moshakhas mikone.
+	
+`ContentDisposition.Size` => Az in yeki ham mishe baraye daryafte hajme file estefade kard ama mamolan `null` hast, `ContentDisposition` ham mitone `null` bashe.
+	
+`ContentDisposition.FileName` => File name ei ke az tarafe server mitone tanzim shode bashe va ba gereftane name az linke fili ke ma darim
 		mitone motefaavet bashe. Yadeton bashe ke in `FileName` mitone `null` bashe, hata `ContentDisposition` ham mitone `null` bashe.
-	`ContentDisposition.ModificationDate` => Tarikhe e modify shodane file, in bishtar be darde download haye `Partial` mikhore ke age, tuye
+		
+`ContentDisposition.ModificationDate` => Tarikhe e modify shodane file, in bishtar be darde download haye `Partial` mikhore ke age, tuye
 		server file e downloadi hajmesh avaz shod ya ye balaei saresh omad, ma motevajeh beshim va koliye part haye downloadi ro hazf konim va
 		az sefr shoro be dl konim.
 
