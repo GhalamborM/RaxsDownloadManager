@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using WDM.Downloaders.Exceptions;
 using WDM.Downloaders.Storage;
 using WDM.Downloaders.Downloads;
+using static WDM.Downloaders.Downloads.HttpHelper;
 using System.Net.Http;
 using System.IO;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Net.Http.Headers;
 
 namespace WDM.Downloaders
 {
@@ -38,19 +40,19 @@ namespace WDM.Downloaders
         {
             _canDownload = true;
             Stopwatch.Reset();
-            using (var handler = new HttpClientHandler { Proxy = Proxy })
-            using (var client = new HttpClient(handler))
-            using (var request = new HttpRequestMessage(HttpMethod.Get, Uri))
+            using (var handler = GetClientHandler(Proxy))
+            using (var client = GetClient(handler))
+            using (var request = GetRequest(Uri))
             {
                 if (BytesWritten > 0)
-                    request.Headers.Range = new System.Net.Http.Headers.RangeHeaderValue(BytesWritten, DownloadInfo.ContentLength);
+                    request.Headers.Range = new RangeHeaderValue(BytesWritten, DownloadInfo.ContentLength);
                 // vaghti range bishtar az hajme file bashe> response.StatusCode RequestedRangeNotSatisfiable
                 //System.IO.IOException: 'Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.'
                 using (var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead))
                 {
                     Debug.WriteLine(response.StatusCode);
-                    if (response.StatusCode != System.Net.HttpStatusCode.OK && 
-                        response.StatusCode != System.Net.HttpStatusCode.PartialContent)
+                    if (response.StatusCode != HttpStatusCode.OK && 
+                        response.StatusCode != HttpStatusCode.PartialContent)
                     {
                         Console.WriteLine("response.StatusCode " + response.StatusCode);
                         return;
