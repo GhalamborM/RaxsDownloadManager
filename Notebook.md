@@ -58,3 +58,22 @@ Hala chera farsi type nakardam? chon farsi type kardane man ye khorde kond hast 
 
 	
 	
+
+File haye `M3U` ya `M3U8` ye playlist az stream haye segment shode hastan. bayad check kard ke age link dakhelesh hast link ro dl kard, age na khode
+file e m3u8 ro dl kard.
+File e `m3u8` be sorate zir hast>
+```
+#EXTM3U
+#EXT-X-TARGETDURATION:12
+#EXT-X-ALLOW-CACHE:YES
+#EXT-X-PLAYLIST-TYPE:VOD
+#EXT-X-VERSION:3
+#EXT-X-MEDIA-SEQUENCE:1
+#EXTINF:4.000,
+https://exmaple.com/seg-1-v1-a1.ts
+#EXTINF:12.000,
+https://exmaple.com/seg-2-v1-a1.ts
+#EXT-X-ENDLIST
+```
+Ba estefade az nuget e `m3uParser` mishe `M3U8` ro parse kard, ama khob chon man nemikham az package haye dg estefade konam, az in package estefade nemikonam.
+Be jash az regex e `@"#EXTINF:(?<duration>.*),\r\n(?<link>((https|http|www.)?\S+))"` estefade mikonam.

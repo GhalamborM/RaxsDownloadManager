@@ -25,5 +25,11 @@ namespace WDM.Downloaders.Downloads
             return request;
         }
 
+        static public HttpRequestMessage GetRequestWithRange(Uri uri, HttpMethod method = null, long? fromRange = null, long? toRange = null)
+        {
+            var request = new HttpRequestMessage(method ?? HttpMethod.Get, uri);
+            request.Headers.Range = new System.Net.Http.Headers.RangeHeaderValue(fromRange, toRange);
+            return request;
+        }
     }
 }

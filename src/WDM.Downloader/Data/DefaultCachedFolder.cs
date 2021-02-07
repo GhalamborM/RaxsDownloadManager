@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace WDM.Downloaders.Data
 {
@@ -6,12 +8,20 @@ namespace WDM.Downloaders.Data
     {
         public string CachedFolderPath => Path.Combine(Path.GetTempPath(), Constants.AppName);
 
-        public bool CheckExists() => Directory.Exists(CachedFolderPath);
+        public Task<bool> CheckCachedFolderExistsAsync() => Task.FromResult(Directory.Exists(CachedFolderPath));
+        public Task<bool> CheckFolderExistsAsync(string folderName) => Task.FromResult(Directory.Exists(Path.Combine(CachedFolderPath, folderName)));
 
-        public void CreateIfNotExists()
+        public async Task CreateIfCahcedFolderNotExistsAsync()
         {
-            if (!CheckExists())
-                Directory.CreateDirectory(CachedFolderPath);
+            if (!await CheckCachedFolderExistsAsync())
+                await Task.FromResult(Directory.CreateDirectory(CachedFolderPath));
         }
+
+        public async Task CreateIfFolderNotExistsAsync(string folderName)
+        {
+            if (!await CheckFolderExistsAsync(folderName))
+                await Task.FromResult(Directory.CreateDirectory(Path.Combine(CachedFolderPath, folderName)));
+        }
+
     }
 }

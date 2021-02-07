@@ -1,4 +1,7 @@
-﻿namespace WDM.Downloaders.Data
+﻿using System.IO;
+using System.Threading.Tasks;
+
+namespace WDM.Downloaders.Data
 {
     public interface ICachedFolder
     {
@@ -9,10 +12,12 @@
         /// <summary>
         ///     Checks folder exists
         /// </summary>
-        bool CheckExists();
+        Task<bool> CheckCachedFolderExistsAsync();
+        Task<bool> CheckFolderExistsAsync(string folderName);
         /// <summary>
         ///     Create cached folder if not exists
         /// </summary>
-        void CreateIfNotExists();
+        Task CreateIfCahcedFolderNotExistsAsync();
+        Task CreateIfFolderNotExistsAsync(string folderName);
     }
 }

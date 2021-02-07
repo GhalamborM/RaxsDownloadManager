@@ -28,6 +28,7 @@ namespace WDM.Downloaders
             if(!uri.Scheme.ToLower().StartsWith("http"))
                 throw new NotSupportedSchemeException($"'{uri.Scheme}' scheme is not supported");
             Uri = uri;
+            if(!string.IsNullOrEmpty(path))
             Path = path;
             DownloadInfo = await DownloadChecker.GetInfoAsync(uri);
         }
@@ -36,7 +37,23 @@ namespace WDM.Downloaders
         readonly public Stopwatch Stopwatch = new Stopwatch();
         public DateTime started;
         public IWebProxy Proxy { get; set; } = null;
-        public async void StartDownload()
+        public async Task StartBatch(List<Uri> urls)
+        {
+            if (urls?.Count > 0)
+            {
+                Debug.WriteLine(">>>>>>>>>>>>>>>>>>>>>>>> Download Started <<<<<<<<<<<<<<<<<<<<<<<<<");
+                foreach (var uri in urls)
+                {
+                    await ConfigureAsync(uri, null);
+                    await StartDownload();
+                }
+
+                Debug.WriteLine(">>>>>>>>>>>>>>>>>>>>>>>> Download Completed <<<<<<<<<<<<<<<<<<<<<<<<<");
+
+            }
+
+        }
+        public async Task StartDownload()
         {
             _canDownload = true;
             Stopwatch.Reset();
@@ -44,8 +61,8 @@ namespace WDM.Downloaders
             using (var client = GetClient(handler))
             using (var request = GetRequest(Uri))
             {
-                if (BytesWritten > 0)
-                    request.Headers.Range = new RangeHeaderValue(BytesWritten, DownloadInfo.ContentLength);
+                //if (BytesWritten > 0)
+                //    request.Headers.Range = new RangeHeaderValue(BytesWritten, DownloadInfo.ContentLength);
                 // vaghti range bishtar az hajme file bashe> response.StatusCode RequestedRangeNotSatisfiable
                 //System.IO.IOException: 'Unable to read data from the transport connection: An existing connection was forcibly closed by the remote host.'
                 using (var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead))
