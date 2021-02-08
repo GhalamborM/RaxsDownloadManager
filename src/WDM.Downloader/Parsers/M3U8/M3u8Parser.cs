@@ -11,7 +11,8 @@ namespace WDM.Downloaders.Parsers.M3U8
     {
         const string M3U8_TAG = "#EXTM3U";
 
-        const string PATTERN = @"#EXTINF:(?<duration>.*),\r\n(?<link>((https|http|www.)?\S+))";
+        //const string PATTERN = @"#EXTINF:(?<duration>.*),\n(?<link>((https|http|www.)?\S+))";
+        const string PATTERN = @"#EXTINF:(?<duration>.*),\n(?<link>(\S+))";
 
         static public M3u8MediaContainer Parse(string content)
         {
@@ -22,11 +23,10 @@ namespace WDM.Downloaders.Parsers.M3U8
             var mediaList = new List<M3u8Media>();
             foreach (Match m in Regex.Matches(content, PATTERN))
             {
-                //Debug.WriteLine("Count: {2} name: {0} URL: {1}", m.Groups["duration"].Value, m.Groups["link"].Value, m.Groups.Count);
-                var link = m.Groups["link"]?.Value;
+                var path = m.Groups["link"]?.Value;
                 var duration = m.Groups["duration"]?.Value;
-                if (!string.IsNullOrEmpty(link) && IsUrl(link) && double.TryParse(duration, out double durationAsDouble))
-                    mediaList.Add(new M3u8Media { Duration = durationAsDouble, Url = link });
+                if (!string.IsNullOrEmpty(path) && double.TryParse(duration, out double durationAsDouble))
+                    mediaList.Add(new M3u8Media { Duration = durationAsDouble, Path = path });
             }
             var durations = mediaList.Select(m => m.Duration).ToArray();
             var container = new M3u8MediaContainer
@@ -36,6 +36,5 @@ namespace WDM.Downloaders.Parsers.M3U8
             };
             return container;
         }
-        static bool IsUrl(string content) => content.Trim().StartsWith("http:") || content.Trim().StartsWith("https:");
     }
 }

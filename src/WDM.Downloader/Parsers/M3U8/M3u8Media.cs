@@ -14,6 +14,6 @@ namespace WDM.Downloaders.Parsers.M3U8
     {
         public double Duration { get; set; }
 
-        public string Url { get; set; }
+        public string Path { get; set; }
     }
 }
