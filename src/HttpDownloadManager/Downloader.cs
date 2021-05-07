@@ -28,9 +28,9 @@ namespace HttpDownloadManager
             if(!uri.Scheme.StartsWith("http", StringComparison.OrdinalIgnoreCase))
                 throw new NotSupportedSchemeException($"'{uri.Scheme}' scheme is not supported");
             Uri = uri;
-            if(!string.IsNullOrEmpty(path))
-            Path = path;
-            DownloadInfo = await DownloadChecker.GetInfoAsync(uri);
+            if (!string.IsNullOrEmpty(path))
+                Path = path;
+            DownloadInfo = await DownloadChecker.GetInfoAsync(uri).ConfigureAwait(false);
         }
         public long BytesWritten { get; private set; }
         bool _canDownload = true;
