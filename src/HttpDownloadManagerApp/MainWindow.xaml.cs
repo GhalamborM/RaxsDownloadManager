@@ -60,14 +60,9 @@ namespace HttpDownloadManager
             var url = "http://127.0.0.1/1.mkv";
             //url = "https://dl16.ftk.pw/user/shahab2/film/Ludo.2020.720p.BluRay.Farsi.Dubbed.Film2Movie_Asia.mkv";
             //url = "https://github.com/dotnet/samples/archive/master.zip";
-            url = "https://ip166475201.ahcdn.com/key=+X6WKktbww8ZDhKHOXQiSg,s=,end=1612245600,limit=3/data=5.135.73.54/state=YBizBYdJ/reftag=78545589/media=hlsA/ssd5/21/0/239196870.m3u8";
-
-            //url = "https://ip166475201.ahcdn.com/key=+X6WKktbww8ZDhKHOXQiSg,s=,end=1612245600,limit=3/data=5.135.73.54/state=YBizBYdJ/reftag=78545589/media=hlsA/ssd5/21/0/239196870.mp4/seg-64-v1-a1.ts";
-
-
             var name = "AZ " + DateTime.Now.Hour + "-" + DateTime.Now.Minute + "-" + DateTime.Now.Second + ".ts";
 
-            var path = Path.Combine(@"D:\Barname nevisi\Projects\WindowsDownloadManger\src\HttpDownloadManager\bin\Debug", url.GetFileName());
+            var path = Path.Combine(@"D:\Barname nevisi\ramtinak\HttpDownloadManager\src\HttpDownloadManagerApp\bin\Debug", url.GetFileName());
             await downloader.ConfigureAsync(new Uri(url), path);
 
         }
