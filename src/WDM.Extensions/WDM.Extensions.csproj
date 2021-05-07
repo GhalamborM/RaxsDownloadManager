@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Description>Extensions pakcage for creating Extensions for WDM.Downloader library</Description>
+    <Description>Extensions package for creating Extensions for WDM.Downloader library</Description>
   </PropertyGroup>
 
 </Project>

@@ -17,7 +17,7 @@ namespace WDM.Downloaders
 {
     public class Downloader
     {
-        const int BUFFER_SIZE = 8192/* *1024*/;
+        const int BUFFER_SIZE = 1024/*8192*//* *1024*/;
         public List<DownloadSegment> Segments { get; } = new List<DownloadSegment>();
         public DownloadInfo DownloadInfo { get; internal set; }
         public FileStorage FileStorage { get; internal set; }
@@ -25,7 +25,7 @@ namespace WDM.Downloaders
         public string Path { get; private set; }
         public async Task ConfigureAsync(Uri uri, string path)
         {
-            if(!uri.Scheme.ToLower().StartsWith("http"))
+            if(!uri.Scheme.StartsWith("http", StringComparison.OrdinalIgnoreCase))
                 throw new NotSupportedSchemeException($"'{uri.Scheme}' scheme is not supported");
             Uri = uri;
             if(!string.IsNullOrEmpty(path))
