@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Description>Extensions package for creating Extensions for HttpDownloadManager.Downloader library</Description>
+  </PropertyGroup>
+
+</Project>
