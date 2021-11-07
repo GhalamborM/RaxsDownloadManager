@@ -1,43 +1,56 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using System.Threading.Tasks;
-using System.Threading;
-
-namespace HttpDownloadManager.Streams
+﻿namespace HttpDownloadManager.Streams
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Threading.Tasks;
+    using System.Threading;
+    /// <summary>
+    ///     Attach/merge multiple streams via <see cref="ConcatenatedStream"/>
+    /// </summary>
+    /// <remarks>
+    ///     CanRead is only implemented!
+    /// </remarks>
     public class ConcatenatedStream : Stream
     {
+        #region Private members
+
+        // We can use Stack as well, but let we use Queue!
         Queue<Stream> _streams;
+
+        #endregion
+
+        #region Properties
+
+        public override bool CanRead => true;
+
+        public override bool CanSeek => false;
+
+        public override bool CanWrite => false;
+
+        #endregion
+
+        #region Constructor/Desctructor
         public ConcatenatedStream(params Stream[] streams) =>
             _streams = new Queue<Stream>(streams);
+
         ~ConcatenatedStream()
         {
             _streams = null;
             Dispose(true);
         }
 
+        #endregion
+
+        #region Public methods
+
         public override int Read(byte[] buffer, int offset, int count)
         {
-            int totalBytesRead = 0;
-
-            while (count > 0 && _streams.Count > 0)
-            {
-                int bytesRead = _streams.Peek().Read(buffer, offset, count);
-                if (bytesRead == 0)
-                {
-                    _streams.Dequeue().Dispose();
-                    continue;
-                }
-
-                totalBytesRead += bytesRead;
-                offset += bytesRead;
-                count -= bytesRead;
-            }
+            int totalBytesRead = ReadAsync(buffer, offset, count).GetAwaiter().GetResult();
 
             return totalBytesRead;
         }
+
         public new async Task<int> ReadAsync(byte[] buffer, int offset, int count)
         {
             int totalBytesRead = 0;
@@ -58,6 +71,7 @@ namespace HttpDownloadManager.Streams
 
             return totalBytesRead;
         }
+
         public new async Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
         {
             int totalBytesRead = 0;
@@ -78,11 +92,10 @@ namespace HttpDownloadManager.Streams
 
             return totalBytesRead;
         }
-        public override bool CanRead => true;
+        
+        #endregion
 
-        public override bool CanSeek => false;
-
-        public override bool CanWrite => false;
+        #region Not implemented functions
 
         public override void Flush()
         {
@@ -120,5 +133,7 @@ namespace HttpDownloadManager.Streams
         {
             throw new NotImplementedException();
         }
+
+        #endregion
     }
 }

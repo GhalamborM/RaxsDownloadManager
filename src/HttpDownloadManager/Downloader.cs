@@ -12,7 +12,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http.Headers;
-
+using System.Threading;
+//https://github.com/Microsoft/dotnet/blob/master/releases/net471/KnownIssues/534719-Networking.ServicePoint.ConnectionLimit%20default%20behavior%20changed.md
+//http://www.bizcoder.com/httpclient-it-lives-and-it-is-glorious
+//https://stackoverflow.com/questions/15705092/do-httpclient-and-httpclienthandler-have-to-be-disposed-between-requests
+//https://github.com/microsoft/vs-threading/blob/main/doc/index.md
 namespace HttpDownloadManager
 {
     public class Downloader
@@ -109,6 +113,14 @@ namespace HttpDownloadManager
                         Stopwatch.Stop();
                     }
                 }
+            }
+        }
+        protected async Task ReadStreamAsync(Stream stream, CancellationToken token)
+        {
+            while (true)
+            {
+                token.ThrowIfCancellationRequested();
+
             }
         }
         public void PauseDownload() => _canDownload = false;
