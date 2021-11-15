@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netframework461;net5.0-windows</TargetFrameworks>
+    <Description>UIExtensions package for creating UI Extension for Windows Download Manager [ RaxsDownloadManager ] app</Description>
+    <UseWPF>true</UseWPF>
+    <LangVersion>latest</LangVersion>
+    <OutputType>WinExe</OutputType>
+
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RaxsDownloadManager.Extensions\RaxsDownloadManager.Extensions.csproj" />
+  </ItemGroup>
+  <!--<ItemGroup Condition="'$(TargetFramework)' == 'netframework461'">
+    --><!--<Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>--><!--
+    --><!--<Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+
+    <Reference Include="Microsoft.CSharp" />
+
+
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+
+
+    <Reference Include="System.Net.Http"/>--><!--
+
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>-->
+</Project>

@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31829.152
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RaxsDownloadManager", "Libs\RaxsDownloadManager\RaxsDownloadManager.csproj", "{A171C778-D699-4894-85E3-95F66938532E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RaxsDownloadManager.Extensions", "Libs\RaxsDownloadManager.Extensions\RaxsDownloadManager.Extensions.csproj", "{F276D141-C3CD-4E1F-8EF3-645E02BCCE5A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RaxsDownloadManager.UIExtensions", "Libs\RaxsDownloadManager.UIExtensions\RaxsDownloadManager.UIExtensions.csproj", "{619749F9-0F02-45FA-8BAC-6A576C13FF34}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Apps", "Apps", "{3D27C65D-A8AE-4B57-AB43-731492BCB0A3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{6F213B6B-3A87-4AA3-8ED6-5906B03856D4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RaxsDownloadManager.Helpers", "Libs\RaxsDownloadManager.Helpers\RaxsDownloadManager.Helpers.csproj", "{2EE7C48E-F87B-4524-BB84-324B732E9BC1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RDM", "Apps\RDM\RDM.csproj", "{F979C108-6683-498A-9C47-7D6E31AAF41C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A171C778-D699-4894-85E3-95F66938532E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A171C778-D699-4894-85E3-95F66938532E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A171C778-D699-4894-85E3-95F66938532E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A171C778-D699-4894-85E3-95F66938532E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F276D141-C3CD-4E1F-8EF3-645E02BCCE5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F276D141-C3CD-4E1F-8EF3-645E02BCCE5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F276D141-C3CD-4E1F-8EF3-645E02BCCE5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F276D141-C3CD-4E1F-8EF3-645E02BCCE5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{619749F9-0F02-45FA-8BAC-6A576C13FF34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{619749F9-0F02-45FA-8BAC-6A576C13FF34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{619749F9-0F02-45FA-8BAC-6A576C13FF34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{619749F9-0F02-45FA-8BAC-6A576C13FF34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EE7C48E-F87B-4524-BB84-324B732E9BC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EE7C48E-F87B-4524-BB84-324B732E9BC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EE7C48E-F87B-4524-BB84-324B732E9BC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EE7C48E-F87B-4524-BB84-324B732E9BC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F979C108-6683-498A-9C47-7D6E31AAF41C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F979C108-6683-498A-9C47-7D6E31AAF41C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F979C108-6683-498A-9C47-7D6E31AAF41C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F979C108-6683-498A-9C47-7D6E31AAF41C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A171C778-D699-4894-85E3-95F66938532E} = {6F213B6B-3A87-4AA3-8ED6-5906B03856D4}
+		{F276D141-C3CD-4E1F-8EF3-645E02BCCE5A} = {6F213B6B-3A87-4AA3-8ED6-5906B03856D4}
+		{619749F9-0F02-45FA-8BAC-6A576C13FF34} = {6F213B6B-3A87-4AA3-8ED6-5906B03856D4}
+		{2EE7C48E-F87B-4524-BB84-324B732E9BC1} = {6F213B6B-3A87-4AA3-8ED6-5906B03856D4}
+		{F979C108-6683-498A-9C47-7D6E31AAF41C} = {3D27C65D-A8AE-4B57-AB43-731492BCB0A3}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2AC8B129-CEB7-43D3-90B3-41D014E9A014}
+	EndGlobalSection
+EndGlobal
