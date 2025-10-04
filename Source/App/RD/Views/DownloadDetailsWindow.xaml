@@ -1,0 +1,265 @@
+<Window x:Class="RD.Views.DownloadDetailsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        mc:Ignorable="d"
+        Title="Download Details" Height="700" Width="900"
+        WindowStartupLocation="CenterOwner"
+        ui:WindowHelper.UseModernWindowStyle="True">
+    
+    <Window.Resources>
+        <!-- Mica-like background -->
+        <LinearGradientBrush x:Key="MicaBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#F3F3F3" Offset="0"/>
+            <GradientStop Color="#F0F0F0" Offset="0.5"/>
+            <GradientStop Color="#EEEEEE" Offset="1"/>
+        </LinearGradientBrush>
+    </Window.Resources>
+    
+    <Grid Background="{StaticResource MicaBackgroundBrush}" Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Download Information -->
+        <Border Style="{StaticResource CardStyle}" Grid.Row="0" Margin="0,0,0,16">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                    <TextBlock Text="?? " FontSize="24" Margin="0,0,12,0"/>
+                    <TextBlock Text="Download Information" 
+                               FontSize="20" 
+                               FontWeight="SemiBold" 
+                               Foreground="{StaticResource AccentColorBrush}"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+                
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" 
+                               Text="File Name:" 
+                               FontWeight="SemiBold" 
+                               VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" 
+                              Text="{Binding FileName, Mode=OneWay}" 
+                              TextWrapping="Wrap" 
+                              VerticalAlignment="Center"
+                              Margin="8,0,0,8"/>
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" 
+                               Text="URL:" 
+                               FontWeight="SemiBold" 
+                               VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" 
+                              Text="{Binding Url, Mode=OneWay}" 
+                              TextWrapping="Wrap" 
+                              VerticalAlignment="Center"
+                              Margin="8,0,0,8"/>
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" 
+                               Text="Save Path:" 
+                               FontWeight="SemiBold" 
+                               VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" 
+                              Text="{Binding FilePath, Mode=OneWay}" 
+                              TextWrapping="Wrap" 
+                              VerticalAlignment="Center"
+                              Margin="8,0,0,8"/>
+
+                    <TextBlock Grid.Row="3" Grid.Column="0" 
+                               Text="Status:" 
+                               FontWeight="SemiBold" 
+                               VerticalAlignment="Center"/>
+                    <Border Grid.Row="3" Grid.Column="1" 
+                           Background="{StaticResource AccentColorBrush}"
+                           CornerRadius="12"
+                           Padding="8,4"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Margin="8,0,0,8">
+                        <TextBlock Text="{Binding Status, Mode=OneWay}" 
+                                  Foreground="White"
+                                  FontWeight="SemiBold"/>
+                    </Border>
+
+                    <TextBlock Grid.Row="4" Grid.Column="0" 
+                               Text="Overall Progress:" 
+                               FontWeight="SemiBold" 
+                               VerticalAlignment="Center"/>
+                    <StackPanel Grid.Row="4" Grid.Column="1" Margin="8,0,0,0">
+                        <ProgressBar Value="{Binding OverallProgress, Mode=OneWay}" 
+                                    Maximum="100" 
+                                    Style="{StaticResource FluentProgressBarStyle}"
+                                    Margin="0,0,0,4"/>
+                        <TextBlock Text="{Binding OverallProgress, StringFormat={}{0:F1}%, Mode=OneWay}" 
+                                   FontWeight="SemiBold" 
+                                   HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+        <!-- Statistics -->
+        <Border Style="{StaticResource CardStyle}" Grid.Row="1" Margin="0,0,0,16">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                    <TextBlock Text="?? " FontSize="20" Margin="0,0,12,0"/>
+                    <TextBlock Text="Statistics" 
+                               FontSize="18" 
+                               FontWeight="SemiBold" 
+                               Foreground="{StaticResource AccentColorBrush}"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Size Card -->
+                    <Border Grid.Column="0" 
+                            Background="{StaticResource SystemControlBackgroundBaseLowBrush}"
+                            CornerRadius="6" 
+                            Padding="12" 
+                            Margin="0,0,8,8">
+                        <StackPanel>
+                            <TextBlock Text="Size" FontWeight="Medium" FontSize="12" Opacity="0.7"/>
+                            <TextBlock Text="{Binding SizeText, Mode=OneWay}" FontWeight="SemiBold" FontSize="16"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Speed Card -->
+                    <Border Grid.Column="1" 
+                            Background="{StaticResource SystemControlBackgroundBaseLowBrush}"
+                            CornerRadius="6" 
+                            Padding="12" 
+                            Margin="8,0,8,8">
+                        <StackPanel>
+                            <TextBlock Text="Speed" FontWeight="Medium" FontSize="12" Opacity="0.7"/>
+                            <TextBlock Text="{Binding SpeedText, Mode=OneWay}" FontWeight="SemiBold" FontSize="16"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Elapsed Time Card -->
+                    <Border Grid.Column="2" 
+                            Background="{StaticResource SystemControlBackgroundBaseLowBrush}"
+                            CornerRadius="6" 
+                            Padding="12" 
+                            Margin="8,0,8,8">
+                        <StackPanel>
+                            <TextBlock Text="Elapsed" FontWeight="Medium" FontSize="12" Opacity="0.7"/>
+                            <TextBlock Text="{Binding ElapsedTime, Mode=OneWay}" FontWeight="SemiBold" FontSize="16"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ETA Card -->
+                    <Border Grid.Column="3" 
+                            Background="{StaticResource SystemControlBackgroundBaseLowBrush}"
+                            CornerRadius="6" 
+                            Padding="12" 
+                            Margin="8,0,0,8">
+                        <StackPanel>
+                            <TextBlock Text="ETA" FontWeight="Medium" FontSize="12" Opacity="0.7"/>
+                            <TextBlock Text="{Binding EstimatedTimeRemaining, Mode=OneWay}" FontWeight="SemiBold" FontSize="16"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+        <!-- Segments -->
+        <Border Style="{StaticResource CardStyle}" Grid.Row="2">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                    <TextBlock Text="?? " FontSize="20" Margin="0,0,12,0"/>
+                    <TextBlock Text="Download Segments" 
+                               FontSize="18" 
+                               FontWeight="SemiBold" 
+                               Foreground="{StaticResource AccentColorBrush}"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <DataGrid Grid.Row="1"
+                         ItemsSource="{Binding Segments}"
+                         AutoGenerateColumns="False"
+                         CanUserAddRows="False"
+                         CanUserDeleteRows="False"
+                         IsReadOnly="True"
+                         GridLinesVisibility="Horizontal"
+                         HeadersVisibility="Column"
+                         AlternatingRowBackground="#F8F8F8">
+                    
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Segment" Binding="{Binding Id, Mode=OneWay}" Width="70"/>
+                        <DataGridTextColumn Header="Range" Binding="{Binding RangeText, Mode=OneWay}" Width="150"/>
+                        <DataGridTextColumn Header="Status" Binding="{Binding StatusText, Mode=OneWay}" Width="100"/>
+                        <DataGridTemplateColumn Header="Progress" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="8,4">
+                                        <ProgressBar Value="{Binding PercentageComplete, Mode=OneWay}" 
+                                                    Maximum="100" 
+                                                    Style="{StaticResource FluentProgressBarStyle}"/>
+                                        <TextBlock Text="{Binding PercentageComplete, StringFormat={}{0:F1}%, Mode=OneWay}" 
+                                                 HorizontalAlignment="Center" 
+                                                 FontSize="10"
+                                                 FontWeight="Medium"
+                                                 VerticalAlignment="Center"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Downloaded" Binding="{Binding ProgressText, Mode=OneWay}" Width="120"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Border>
+
+        <!-- Control Buttons -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+            <Button Content="?? Pause" 
+                    Command="{Binding PauseDownloadCommand}" 
+                    IsEnabled="{Binding CanPause, Mode=OneWay}" 
+                    Style="{StaticResource FluentSecondaryButtonStyle}"/>
+            
+            <Button Content="?? Resume" 
+                    Command="{Binding ResumeDownloadCommand}" 
+                    IsEnabled="{Binding CanResume, Mode=OneWay}" 
+                    Style="{StaticResource FluentButtonStyle}"/>
+            
+            <Button Content="?? Restart" 
+                    Command="{Binding RestartDownloadCommand}" 
+                    Style="{StaticResource FluentSecondaryButtonStyle}"/>
+            
+            <Button Content="Close" 
+                    Click="CloseButton_Click" 
+                    Style="{StaticResource FluentSecondaryButtonStyle}"/>
+        </StackPanel>
+    </Grid>
+</Window>

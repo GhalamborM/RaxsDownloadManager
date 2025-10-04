@@ -1,0 +1,301 @@
+<Window x:Class="RD.Views.SchedulerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RD.Views"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        mc:Ignorable="d"
+        Title="Task Scheduler" Height="800" Width="1300"
+        WindowStartupLocation="CenterScreen"
+        ui:WindowHelper.UseModernWindowStyle="True">
+    
+    <Window.Resources>
+        <!-- Mica-like background -->
+        <LinearGradientBrush x:Key="MicaBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#F3F3F3" Offset="0"/>
+            <GradientStop Color="#F0F0F0" Offset="0.5"/>
+            <GradientStop Color="#EEEEEE" Offset="1"/>
+        </LinearGradientBrush>
+    </Window.Resources>
+
+    <TabControl Background="{StaticResource MicaBackgroundBrush}" Padding="16">
+        <!-- Tasks Tab -->
+        <TabItem Header="?? Scheduled Tasks">
+            <Grid Margin="16">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Tasks List -->
+                <Border Style="{StaticResource CardStyle}" Grid.Row="0" Grid.Column="0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Text="Scheduled Tasks" 
+                                   FontSize="18" 
+                                   FontWeight="SemiBold" 
+                                   Margin="0,0,0,12"
+                                   Foreground="{StaticResource AccentColorBrush}"/>
+
+                        <!-- Task Controls -->
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,8">
+                            <Button Content="?? Start" Command="{Binding StartTaskCommand}" Style="{StaticResource FluentButtonStyle}" Margin="0,0,8,0"/>
+                            <Button Content="?? Stop" Command="{Binding StopTaskCommand}" Style="{StaticResource FluentSecondaryButtonStyle}" Margin="0,0,8,0"/>
+                            <Button Content="?? Toggle" Command="{Binding ToggleTaskEnabledCommand}" Style="{StaticResource FluentSecondaryButtonStyle}" Margin="0,0,8,0"/>
+                            <Button Content="??? Remove" Command="{Binding RemoveTaskCommand}" Style="{StaticResource FluentSecondaryButtonStyle}"/>
+                        </StackPanel>
+
+                        <!-- Tasks DataGrid -->
+                        <DataGrid Grid.Row="2" 
+                                 ItemsSource="{Binding Tasks}"
+                                 SelectedItem="{Binding SelectedTask}"
+                                 AutoGenerateColumns="False"
+                                 CanUserAddRows="False"
+                                 CanUserDeleteRows="False"
+                                 IsReadOnly="True"
+                                 GridLinesVisibility="Horizontal"
+                                 HeadersVisibility="Column"
+                                 SelectionMode="Single"
+                                 AlternatingRowBackground="#F8F8F8"
+                                 Margin="0,0,0,8">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="150"/>
+                                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100"/>
+                                <DataGridCheckBoxColumn Header="Enabled" Binding="{Binding IsEnabled}" Width="60" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Start Time" Binding="{Binding StartTime, StringFormat={}{0:yyyy-MM-dd HH:mm}}" Width="130"/>
+                                <DataGridTextColumn Header="End Time" Binding="{Binding EndTime, StringFormat={}{0:yyyy-MM-dd HH:mm}}" Width="130"/>
+                                <DataGridTextColumn Header="Downloads" Binding="{Binding Downloads.Count}" Width="80"/>
+                                <DataGridTextColumn Header="Max Concurrent" Binding="{Binding MaxConcurrentDownloads}" Width="100"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <!-- Task Downloads Section -->
+                        <Border Grid.Row="3" 
+                                Background="{StaticResource SystemControlBackgroundBaseLowBrush}"
+                                BorderBrush="{StaticResource SystemControlBackgroundBaseMediumBrush}"
+                                BorderThickness="1"
+                                CornerRadius="6"
+                                Padding="12">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Text="Downloads in Selected Task" 
+                                           FontSize="14" 
+                                           FontWeight="SemiBold" 
+                                           Margin="0,0,0,8"/>
+
+                                <!-- Download Controls -->
+                                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,8">
+                                    <Button Content="??? Remove Download" Command="{Binding RemoveDownloadFromTaskCommand}" Style="{StaticResource FluentSecondaryButtonStyle}"/>
+                                </StackPanel>
+
+                                <!-- Downloads DataGrid -->
+                                <DataGrid Grid.Row="2"
+                                         ItemsSource="{Binding SelectedTask.Downloads}"
+                                         SelectedItem="{Binding SelectedDownload}"
+                                         AutoGenerateColumns="False"
+                                         CanUserAddRows="False"
+                                         CanUserDeleteRows="False"
+                                         IsReadOnly="True"
+                                         GridLinesVisibility="Horizontal"
+                                         HeadersVisibility="Column"
+                                         SelectionMode="Single"
+                                         AlternatingRowBackground="#F8F8F8">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="URL" Binding="{Binding Url}" Width="*"/>
+                                        <DataGridTextColumn Header="File Path" Binding="{Binding FilePath}" Width="200"/>
+                                        <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- Create Task Form -->
+                <Border Style="{StaticResource CardStyle}" Grid.Row="0" Grid.Column="1">
+                    <ScrollViewer>
+                        <StackPanel>
+                            <TextBlock Text="Create New Task" 
+                                       FontSize="18" 
+                                       FontWeight="SemiBold" 
+                                       Margin="0,0,0,16"
+                                       Foreground="{StaticResource AccentColorBrush}"/>
+
+                            <Label Content="Task Name:" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                            <TextBox Text="{Binding NewTaskName}" 
+                                     Style="{StaticResource FluentTextBoxStyle}"
+                                     Margin="0,0,0,12"/>
+
+                            <Label Content="Start Date:" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                            <DatePicker SelectedDate="{Binding NewTaskStartTime}" 
+                                       Height="36"
+                                       Margin="4,0,4,12"/>
+
+                            <CheckBox Content="Has End Time" 
+                                     IsChecked="{Binding HasEndTime}" 
+                                     Margin="0,0,0,12"/>
+
+                            <Label Content="End Date:" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                            <DatePicker SelectedDate="{Binding NewTaskEndTime}" 
+                                       IsEnabled="{Binding HasEndTime}"
+                                       Height="36"
+                                       Margin="4,0,4,12"/>
+
+                            <Label Content="Max Concurrent Downloads:" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                            <TextBox Text="{Binding NewTaskMaxConcurrentDownloads}" 
+                                     Style="{StaticResource FluentTextBoxStyle}"
+                                     Margin="0,0,0,16"/>
+
+                            <Button Content="Create Task" 
+                                    Command="{Binding CreateTaskCommand}" 
+                                    Style="{StaticResource FluentButtonStyle}"/>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+
+                <!-- Add Download Form -->
+                <Border Style="{StaticResource CardStyle}" Grid.Row="1" Grid.ColumnSpan="2">
+                    <StackPanel>
+                        <TextBlock Text="Add Download to Selected Task" 
+                                   FontSize="16" 
+                                   FontWeight="SemiBold" 
+                                   Margin="0,0,0,12"
+                                   Foreground="{StaticResource AccentColorBrush}"/>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Margin="0,0,8,0">
+                                <Label Content="URL:" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                                <TextBox Text="{Binding NewDownloadUrl}" 
+                                        Style="{StaticResource FluentTextBoxStyle}"/>
+                            </StackPanel>
+                            
+                            <StackPanel Grid.Column="1" Margin="8,0,8,0">
+                                <Label Content="File Path:" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                                <TextBox Text="{Binding NewDownloadFilePath}" 
+                                        Style="{StaticResource FluentTextBoxStyle}"/>
+                            </StackPanel>
+                            
+                            <Button Grid.Column="2"
+                                    Content="Browse..." 
+                                    Command="{Binding BrowseFilePathCommand}" 
+                                    Style="{StaticResource FluentSecondaryButtonStyle}"
+                                    VerticalAlignment="Bottom"/>
+                            
+                            <Button Grid.Column="3"
+                                    Content="Add Download" 
+                                    Command="{Binding AddDownloadToTaskCommand}" 
+                                    Style="{StaticResource FluentButtonStyle}"
+                                    VerticalAlignment="Bottom"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </TabItem>
+
+        <!-- Options Tab -->
+        <TabItem Header="?? Scheduler Options">
+            <ScrollViewer Margin="16">
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="Scheduler Configuration" 
+                                   FontSize="18" 
+                                   FontWeight="SemiBold" 
+                                   Margin="0,0,0,16"
+                                   Foreground="{StaticResource AccentColorBrush}"/>
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Global Enable/Disable -->
+                            <CheckBox Grid.Row="0" Grid.ColumnSpan="2"
+                                     Content="Enable Task Scheduler Globally"
+                                     IsChecked="{Binding IsGloballyEnabled}" 
+                                     FontWeight="SemiBold"
+                                     Margin="0,0,0,12"/>
+
+                            <!-- Default Max Concurrent Downloads -->
+                            <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,8,12">
+                                <Label Content="Default Max Concurrent Downloads:" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                                <TextBox Text="{Binding DefaultMaxConcurrentDownloads}" Style="{StaticResource FluentTextBoxStyle}"/>
+                            </StackPanel>
+
+                            <!-- Check Interval -->
+                            <StackPanel Grid.Row="1" Grid.Column="1" Margin="8,0,0,12">
+                                <Label Content="Check Interval (seconds):" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                                <TextBox Text="{Binding CheckIntervalSeconds}" Style="{StaticResource FluentTextBoxStyle}"/>
+                            </StackPanel>
+
+                            <!-- Auto Remove Completed Downloads -->
+                            <CheckBox Grid.Row="2" Grid.ColumnSpan="2"
+                                     Content="Automatically remove completed downloads from tasks"
+                                     IsChecked="{Binding AutoRemoveCompletedDownloads}" 
+                                     Margin="0,0,0,8"/>
+
+                            <!-- Auto Remove Completed Tasks -->
+                            <CheckBox Grid.Row="3" Grid.ColumnSpan="2"
+                                     Content="Automatically remove completed/stopped tasks"
+                                     IsChecked="{Binding AutoRemoveCompletedTasks}" 
+                                     Margin="0,0,0,12"/>
+
+                            <!-- Failed Download Retry Delay -->
+                            <StackPanel Grid.Row="4" Grid.Column="0" Margin="0,0,8,12">
+                                <Label Content="Failed Download Retry Delay (minutes):" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                                <TextBox Text="{Binding FailedDownloadRetryDelayMinutes}" Style="{StaticResource FluentTextBoxStyle}"/>
+                            </StackPanel>
+
+                            <!-- Max Retry Attempts -->
+                            <StackPanel Grid.Row="4" Grid.Column="1" Margin="8,0,0,12">
+                                <Label Content="Maximum Retry Attempts:" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                                <TextBox Text="{Binding MaxRetryAttempts}" Style="{StaticResource FluentTextBoxStyle}"/>
+                            </StackPanel>
+
+                            <!-- Apply Button -->
+                            <Button Grid.Row="5" Grid.ColumnSpan="2"
+                                   Content="Apply Options" 
+                                   Command="{Binding ApplyOptionsCommand}" 
+                                   Style="{StaticResource FluentButtonStyle}" 
+                                   HorizontalAlignment="Left" 
+                                   Margin="0,16,0,0"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </ScrollViewer>
+        </TabItem>
+    </TabControl>
+</Window>

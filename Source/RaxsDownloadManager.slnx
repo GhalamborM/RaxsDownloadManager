@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/App/">
+    <Project Path="App/RD/RD.csproj" />
+  </Folder>
+  <Folder Name="/Libs/">
+    <Project Path="Libs/RD.Core/RD.Core.csproj" />
+    <Project Path="Libs/Scheduler/Scheduler.csproj" />
+  </Folder>
+</Solution>
