@@ -103,27 +103,37 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="File Name" Binding="{Binding FileName}" Width="200"/>
                         <DataGridTextColumn Header="Status" Binding="{Binding StatusText}" Width="100"/>
-                        <DataGridTemplateColumn Header="Progress" Width="200">
+                        <DataGridTemplateColumn Header="Size" Width="130">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid Margin="8,4">
                                         <ProgressBar Value="{Binding PercentageComplete, Mode=OneWay}" 
                                                  VerticalAlignment="Bottom"
-                                                    Maximum="100" />
-                                        <TextBlock Text="{Binding PercentageComplete, StringFormat={}{0:F1}%, Mode=OneWay}" 
+                                                 Maximum="100" Margin="0 -3"/>
+                                        <TextBlock 
                                                  HorizontalAlignment="Center" 
                                                  FontSize="11"
                                                  FontWeight="Medium"
                                                  VerticalAlignment="Center"
-                                                 Foreground="{StaticResource SystemControlForegroundBaseHighBrush}"/>
+                                                 Foreground="{StaticResource SystemControlForegroundBaseHighBrush}">
+                                            
+                                            <Run Text="{Binding SizeText, Mode=OneWay}" />
+                                            <LineBreak/>        <Run Text="{Binding PercentageComplete, StringFormat={}{0:F1}%, Mode=OneWay}"  />
+                                        </TextBlock>
+                                        <!--<TextBlock Text="{Binding PercentageComplete, StringFormat={}{0:F1}%, Mode=OneWay}" 
+                                                 HorizontalAlignment="Center" 
+                                                 FontSize="11"
+                                                 FontWeight="Medium"
+                                                 VerticalAlignment="Center"
+                                                 Foreground="{StaticResource SystemControlForegroundBaseHighBrush}"/>-->
                                     </Grid>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="Size" Binding="{Binding SizeText, Mode=OneWay}" Width="120"/>
+                        <!--<DataGridTextColumn Header="Size" Binding="{Binding SizeText, Mode=OneWay}" Width="120"/>-->
                         <DataGridTextColumn Header="Speed" Binding="{Binding SpeedText, Mode=OneWay}" Width="100"/>
                         <!--<DataGridTextColumn Header="URL" Binding="{Binding Url, Mode=OneWay}" Width="*"/>-->
-                        <DataGridTextColumn Header="Created" Binding="{Binding CreatedAt, StringFormat={}{0:yyyy-MM-dd HH:mm}, Mode=OneWay}" Width="130"/>
+                        <!--<DataGridTextColumn Header="Created" Binding="{Binding CreatedAt, StringFormat={}{0:yyyy-MM-dd HH:mm}, Mode=OneWay}" Width="130"/>-->
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>

@@ -5,8 +5,156 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RD.Controls"
         mc:Ignorable="d"
-        Title="CustomMessageBox" Height="450" Width="800">
-    <Grid>
+        Title="{Binding MessageTitle, RelativeSource={RelativeSource Self}}" 
+        Height="Auto" Width="480" 
+        MinHeight="200" MinWidth="400" MaxWidth="600"
+        SizeToContent="Height"
+        WindowStartupLocation="CenterOwner"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ShowInTaskbar="False"
+        ResizeMode="NoResize">
+    
+    <Window.Resources>
+        <!-- Mica Glass Effect Background -->
+        <LinearGradientBrush x:Key="MicaBackgroundBrush" StartPoint="0,0" EndPoint="0,1" Opacity="0.95">
+            <GradientStop Color="#FFFFFF" Offset="0"/>
+            <GradientStop Color="#F8F8F8" Offset="0.5"/>
+            <GradientStop Color="#F0F0F0" Offset="1"/>
+        </LinearGradientBrush>
         
-    </Grid>
+        <!-- Icon styles for different message types -->
+        <Style x:Key="MessageIconStyle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+            <Setter Property="FontSize" Value="32"/>
+            <Setter Property="Margin" Value="0,0,16,0"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Margin" Value="0,8,16,0"/>
+        </Style>
+        
+        <!-- Close button style -->
+        <Style x:Key="CloseButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="#666666"/>
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Width" Value="32"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#20FF0000"/>
+                                <Setter Property="Foreground" Value="#CC0000"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#40FF0000"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    
+    <!-- Outer border with glass effect and shadow -->
+    <Border Background="Transparent" Padding="12">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="25" ShadowDepth="8" Opacity="0.3" Color="#000000"/>
+        </Border.Effect>
+        
+        <Border Background="{StaticResource MicaBackgroundBrush}"
+                BorderBrush="#E0E0E0"
+                BorderThickness="1"
+                CornerRadius="12">
+            
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/> <!-- Title bar -->
+                    <RowDefinition Height="*"/>    <!-- Content -->
+                    <RowDefinition Height="Auto"/> <!-- Buttons -->
+                </Grid.RowDefinitions>
+                
+                <!-- Title Bar -->
+                <Border Grid.Row="0" 
+                        Background="Transparent"
+                        Padding="20,16,16,16"
+                        MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <TextBlock x:Name="TitleText"
+                                   Grid.Column="0"
+                                   Text="{Binding MessageTitle, RelativeSource={RelativeSource AncestorType=Window}}"
+                                   FontSize="16"
+                                   FontWeight="SemiBold"
+                                   Foreground="#333333"
+                                   VerticalAlignment="Center"/>
+                        
+                        <Button x:Name="CloseButton"
+                                Grid.Column="1"
+                                Content="&#xE8BB;"
+                                Style="{StaticResource CloseButtonStyle}"
+                                Click="CloseButton_Click"/>
+                    </Grid>
+                </Border>
+                
+                <!-- Content Area -->
+                <Border Grid.Row="1" 
+                        Padding="20,8,20,20">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/> <!-- Icon -->
+                            <ColumnDefinition Width="*"/>    <!-- Message -->
+                        </Grid.ColumnDefinitions>
+                        
+                        <!-- Message Icon -->
+                        <TextBlock x:Name="MessageIcon"
+                                   Grid.Column="0"
+                                   Style="{StaticResource MessageIconStyle}"/>
+                        
+                        <!-- Message Content -->
+                        <StackPanel Grid.Column="1" VerticalAlignment="Top">
+                            <TextBlock x:Name="MessageText"
+                                       FontSize="14"
+                                       Foreground="#333333"
+                                       TextWrapping="Wrap"
+                                       LineHeight="20"
+                                       Margin="0,8,0,0"/>
+                            
+                            <!-- Additional content area for custom controls -->
+                            <ContentPresenter x:Name="AdditionalContent"
+                                              Margin="0,16,0,0"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                
+                <!-- Buttons Area -->
+                <Border Grid.Row="2" 
+                        Background="#F8F8F8"
+                        BorderBrush="#E8E8E8"
+                        BorderThickness="0,1,0,0"
+                        Padding="20,16"
+                        CornerRadius="0,0,12,12">
+                    <StackPanel x:Name="ButtonsPanel"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Right"/>
+                </Border>
+            </Grid>
+        </Border>
+    </Border>
 </Window>
