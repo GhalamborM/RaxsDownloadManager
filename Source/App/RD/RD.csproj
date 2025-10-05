@@ -5,13 +5,20 @@
     <TargetFramework>net8.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>RDLogo.ico</ApplicationIcon>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
     <Authors>Ramtin Jokar</Authors>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Assets\Fonts\SEGMDL2.TTF" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="RDLogo.ico" />
   </ItemGroup>
 
   <ItemGroup>
