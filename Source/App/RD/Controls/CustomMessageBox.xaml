@@ -24,15 +24,6 @@
             <GradientStop Color="#F0F0F0" Offset="1"/>
         </LinearGradientBrush>
         
-        <!-- Icon styles for different message types -->
-        <Style x:Key="MessageIconStyle" TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
-            <Setter Property="FontSize" Value="32"/>
-            <Setter Property="Margin" Value="0,0,16,0"/>
-            <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="Margin" Value="0,8,16,0"/>
-        </Style>
-        
         <!-- Close button style -->
         <Style x:Key="CloseButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>

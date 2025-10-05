@@ -11,6 +11,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Fonts\SEGMDL2.TTF" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.9" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.9" />
@@ -25,6 +29,16 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Libs\RD.Core\RD.Core.csproj" />
     <ProjectReference Include="..\..\Libs\Scheduler\Scheduler.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\Fonts\SEGMDL2.TTF" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Languages\en.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

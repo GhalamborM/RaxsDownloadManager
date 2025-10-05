@@ -3,11 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:loc="clr-namespace:RD.Localization"
         xmlns:local="clr-namespace:RD"
         xmlns:converters="clr-namespace:RD.Converters"
         xmlns:ui="http://schemas.modernwpf.com/2019"
         mc:Ignorable="d"
-        Title="R Download Manager" Height="500" Width="800"
+        Title="{loc:Localize App.Title}" Height="500" Width="800"
         WindowStartupLocation="CenterScreen"
         ui:WindowHelper.UseModernWindowStyle="True">
     
@@ -28,6 +29,8 @@
             <Setter Property="Background" Value="#00FFFFFF"/>
             <Setter Property="Padding" Value="16,8"/>
         </Style>
+        
+        
     </Window.Resources>
     
     <Grid Background="{StaticResource MicaBackgroundBrush}">
@@ -39,15 +42,15 @@
 
         <!-- Modern Command Bar -->
         <ui:CommandBar Grid.Row="0" Style="{StaticResource ModernCommandBarStyle}">
-            <ui:AppBarButton Icon="Add" Label="Add Download" Command="{Binding ShowAddDownloadCommand}"/>
+            <ui:AppBarButton Icon="Add" Label="{loc:Localize MainWindow.AddDownload}" Command="{Binding ShowAddDownloadCommand}"/>
             <ui:AppBarSeparator/>
-            <ui:AppBarButton Icon="Play" Label="Resume" Command="{Binding ResumeDownloadCommand}"/>
-            <ui:AppBarButton Icon="Pause" Label="Pause" Command="{Binding PauseDownloadCommand}"/>
-            <ui:AppBarButton Icon="Refresh" Label="Restart" Command="{Binding RestartDownloadCommand}"/>
-            <ui:AppBarButton Icon="Delete" Label="Remove" Command="{Binding RemoveDownloadCommand}"/>
+            <ui:AppBarButton Icon="Play" Label="{loc:Localize General.Resume}" Command="{Binding ResumeDownloadCommand}"/>
+            <ui:AppBarButton Icon="Pause" Label="{loc:Localize General.Pause}" Command="{Binding PauseDownloadCommand}"/>
+            <ui:AppBarButton Icon="Refresh" Label="{loc:Localize General.Refresh}" Command="{Binding RestartDownloadCommand}"/>
+            <ui:AppBarButton Icon="Delete" Label="{loc:Localize General.Remove}" Command="{Binding RemoveDownloadCommand}"/>
             <ui:AppBarSeparator/>
-            <ui:AppBarButton Icon="Calendar" Label="Task Scheduler" Command="{Binding ShowSchedulerCommand}"/>
-            <ui:AppBarButton Icon="Setting" Label="Options" Command="{Binding ShowOptionsCommand}"/>
+            <!--<ui:AppBarButton Icon="Calendar" Label="Task Scheduler" Command="{Binding ShowSchedulerCommand}"/>-->
+            <ui:AppBarButton Icon="Setting" Label="{loc:Localize General.Options}" Command="{Binding ShowOptionsCommand}"/>
         </ui:CommandBar>
 
         <!-- Downloads Card -->
@@ -89,21 +92,21 @@
                     
                     <DataGrid.ContextMenu>
                         <ContextMenu>
-                            <MenuItem Header="Add URL to Task..." Command="{Binding AddUrlToTaskCommand}"/>
+                            <!--<MenuItem Header="Add URL to Task..." Command="{Binding AddUrlToTaskCommand}"/>-->
                             <Separator/>
-                            <MenuItem Header="Resume" Command="{Binding ResumeDownloadCommand}"/>
-                            <MenuItem Header="Pause" Command="{Binding PauseDownloadCommand}"/>
-                            <MenuItem Header="Restart" Command="{Binding RestartDownloadCommand}"/>
-                            <MenuItem Header="Remove" Command="{Binding RemoveDownloadCommand}"/>
+                            <MenuItem Header="{loc:Localize General.Resume}" Command="{Binding ResumeDownloadCommand}"/>
+                            <MenuItem Header="{loc:Localize General.Pause}" Command="{Binding PauseDownloadCommand}"/>
+                            <MenuItem Header="{loc:Localize General.Restart}" Command="{Binding RestartDownloadCommand}"/>
+                            <MenuItem Header="{loc:Localize General.Remove}" Command="{Binding RemoveDownloadCommand}"/>
                             <Separator/>
-                            <MenuItem Header="Show Details" Command="{Binding ShowDownloadDetailsCommand}"/>
+                            <MenuItem Header="{loc:Localize MainWindow.ShowDetails}" Command="{Binding ShowDownloadDetailsCommand}"/>
                         </ContextMenu>
                     </DataGrid.ContextMenu>
                     
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="File Name" Binding="{Binding FileName}" Width="200"/>
-                        <DataGridTextColumn Header="Status" Binding="{Binding StatusText}" Width="100"/>
-                        <DataGridTemplateColumn Header="Size" Width="130">
+                        <DataGridTextColumn Header="{loc:Localize General.FileName}" Binding="{Binding FileName}" Width="200"/>
+                        <DataGridTextColumn Header="{loc:Localize General.Status}" Binding="{Binding StatusText}" Width="100"/>
+                        <DataGridTemplateColumn Header="{loc:Localize General.Size}" Width="130">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid Margin="8,4">
@@ -131,7 +134,7 @@
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                         <!--<DataGridTextColumn Header="Size" Binding="{Binding SizeText, Mode=OneWay}" Width="120"/>-->
-                        <DataGridTextColumn Header="Speed" Binding="{Binding SpeedText, Mode=OneWay}" Width="100"/>
+                        <DataGridTextColumn Header="{loc:Localize General.Speed}" Binding="{Binding SpeedText, Mode=OneWay}" Width="100"/>
                         <!--<DataGridTextColumn Header="URL" Binding="{Binding Url, Mode=OneWay}" Width="*"/>-->
                         <!--<DataGridTextColumn Header="Created" Binding="{Binding CreatedAt, StringFormat={}{0:yyyy-MM-dd HH:mm}, Mode=OneWay}" Width="130"/>-->
                     </DataGrid.Columns>
@@ -148,11 +151,11 @@
             <Grid>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="📥 " FontSize="16" Margin="0,0,8,0"/>
-                    <TextBlock Text="Downloads: " FontWeight="Medium"/>
+                    <TextBlock Text="{loc:Localize MainWindow.Downloads}" FontWeight="Medium"/>
                     <TextBlock Text="{Binding Downloads.Count, Mode=OneWay}" FontWeight="SemiBold" Margin="0,0,24,0"/>
                     
                     <TextBlock Text="🚀 " FontSize="16" Margin="0,0,8,0"/>
-                    <TextBlock Text="Active: " FontWeight="Medium"/>
+                    <TextBlock Text="{loc:Localize MainWindow.Active}" FontWeight="Medium"/>
                     <TextBlock Text="{Binding Downloads.Count, Mode=OneWay}" FontWeight="SemiBold"/>
                 </StackPanel>
                 
@@ -160,7 +163,7 @@
                            HorizontalAlignment="Right"
                            Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
                     <ProgressBar Width="100" Height="4" IsIndeterminate="True" Margin="0,0,12,0" Style="{StaticResource FluentProgressBarStyle}"/>
-                    <TextBlock Text="Loading..." FontWeight="Medium" VerticalAlignment="Center"/>
+                    <TextBlock Text="{loc:Localize MainWindow.Loading}" FontWeight="Medium" VerticalAlignment="Center"/>
                 </StackPanel>
             </Grid>
         </Border>

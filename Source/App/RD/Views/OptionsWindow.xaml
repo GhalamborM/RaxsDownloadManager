@@ -3,10 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:loc="clr-namespace:RD.Localization"
         xmlns:ui="http://schemas.modernwpf.com/2019"
         mc:Ignorable="d"
-        Title="Options" Height="600" Width="550"
-        WindowStartupLocation="CenterOwner"
+        Title="{loc:Localize OptionsWindow.Options}" Height="600" Width="550"
+        WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         ui:WindowHelper.UseModernWindowStyle="True">
     
@@ -18,127 +19,138 @@
             <GradientStop Color="#EEEEEE" Offset="1"/>
         </LinearGradientBrush>
     </Window.Resources>
-    
-    <ScrollViewer Background="{StaticResource MicaBackgroundBrush}" VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="24">
-            <!-- General Settings -->
-            <Border Style="{StaticResource CardStyle}" Margin="0,0,0,16">
-                <StackPanel>
-                    <TextBlock Text="General Settings" 
+
+    <Grid  Background="{StaticResource MicaBackgroundBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="24">
+                <!-- General Settings -->
+                <Border Style="{StaticResource CardStyle}" Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="{loc:Localize OptionsWindow.GeneralSettings}" 
                                FontSize="18" 
                                FontWeight="SemiBold" 
                                Margin="0,0,0,16"
                                Foreground="{StaticResource AccentColorBrush}"/>
-                    
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
 
-                        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,0,12">
-                            <Label Content="Max Concurrent Downloads:" FontWeight="SemiBold" Padding="0,0,0,4"/>
-                            <TextBox Text="{Binding MaxConcurrentDownloads}" 
-                                     Style="{StaticResource FluentTextBoxStyle}"/>
-                        </StackPanel>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
 
-                        <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,8,0">
-                            <Label Content="Temp Directory:" FontWeight="SemiBold" Padding="0,0,0,4"/>
-                            <TextBox Text="{Binding TempDirectory}" 
+                            <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,0,12">
+                                <Label Content="{loc:Localize OptionsWindow.MaxConcurrentDownloads}" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                                <TextBox Text="{Binding MaxConcurrentDownloads}" 
                                      Style="{StaticResource FluentTextBoxStyle}"/>
-                        </StackPanel>
-                        
-                        <Button Grid.Row="1" Grid.Column="1"
-                                Content="Browse..." 
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,8,0">
+                                <Label Content="{loc:Localize OptionsWindow.TempDirectory}" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                                <TextBox Text="{Binding TempDirectory}" 
+                                     Style="{StaticResource FluentTextBoxStyle}"/>
+                            </StackPanel>
+
+                            <Button Grid.Row="1" Grid.Column="1"
+                                Content="{loc:Localize General.Browse}" 
                                 Style="{StaticResource FluentSecondaryButtonStyle}"
                                 Command="{Binding BrowseTempDirectoryCommand}"
                                 VerticalAlignment="Bottom"/>
-                    </Grid>
-                </StackPanel>
-            </Border>
+                        </Grid>
+                    </StackPanel>
+                </Border>
 
-            <!-- Default Download Settings -->
-            <Border Style="{StaticResource CardStyle}" Margin="0,0,0,24">
-                <StackPanel>
-                    <TextBlock Text="Default Download Settings" 
+                <!-- Default Download Settings -->
+                <Border Style="{StaticResource CardStyle}" Margin="0,0,0,24">
+                    <StackPanel>
+                        <TextBlock Text="{loc:Localize OptionsWindow.DefaultDownloadSettings}" 
                                FontSize="18" 
                                FontWeight="SemiBold" 
                                Margin="0,0,0,16"
                                Foreground="{StaticResource AccentColorBrush}"/>
-                    
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
 
-                        <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,8,12">
-                            <Label Content="Max Segments:" FontWeight="SemiBold" Padding="0,0,0,4"/>
-                            <TextBox Text="{Binding DefaultMaxSegments}" Style="{StaticResource FluentTextBoxStyle}"/>
-                        </StackPanel>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                        <StackPanel Grid.Row="0" Grid.Column="1" Margin="8,0,0,12">
-                            <Label Content="Buffer Size:" FontWeight="SemiBold" Padding="0,0,0,4"/>
-                            <TextBox Text="{Binding DefaultBufferSize}" Style="{StaticResource FluentTextBoxStyle}"/>
-                        </StackPanel>
+                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,8,12">
+                                <Label Content="{loc:Localize AddDownloadWindow.MaxSegments}" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                                <TextBox Text="{Binding DefaultMaxSegments}" Style="{StaticResource FluentTextBoxStyle}"/>
+                            </StackPanel>
 
-                        <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,8,12">
-                            <Label Content="Timeout (minutes):" FontWeight="SemiBold" Padding="0,0,0,4"/>
-                            <TextBox Text="{Binding DefaultTimeoutMinutes}" Style="{StaticResource FluentTextBoxStyle}"/>
-                        </StackPanel>
+                            <StackPanel Grid.Row="0" Grid.Column="1" Margin="8,0,0,12">
+                                <Label Content="{loc:Localize AddDownloadWindow.BufferSize}" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                                <TextBox Text="{Binding DefaultBufferSize}" Style="{StaticResource FluentTextBoxStyle}"/>
+                            </StackPanel>
 
-                        <StackPanel Grid.Row="1" Grid.Column="1" Margin="8,0,0,12">
-                            <Label Content="Retry Attempts:" FontWeight="SemiBold" Padding="0,0,0,4"/>
-                            <TextBox Text="{Binding DefaultRetryAttempts}" Style="{StaticResource FluentTextBoxStyle}"/>
-                        </StackPanel>
+                            <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,8,12">
+                                <Label Content="{loc:Localize AddDownloadWindow.Timeout}" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                                <TextBox Text="{Binding DefaultTimeoutMinutes}" Style="{StaticResource FluentTextBoxStyle}"/>
+                            </StackPanel>
 
-                        <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,8,12">
-                            <Label Content="Retry Delay (seconds):" FontWeight="SemiBold" Padding="0,0,0,4"/>
-                            <TextBox Text="{Binding DefaultRetryDelaySeconds}" Style="{StaticResource FluentTextBoxStyle}"/>
-                        </StackPanel>
+                            <StackPanel Grid.Row="1" Grid.Column="1" Margin="8,0,0,12">
+                                <Label Content="{loc:Localize AddDownloadWindow.RetryAttempts}" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                                <TextBox Text="{Binding DefaultRetryAttempts}" Style="{StaticResource FluentTextBoxStyle}"/>
+                            </StackPanel>
 
-                        <StackPanel Grid.Row="2" Grid.Column="1" Margin="8,0,0,12">
-                            <Label Content="Progress Report (ms):" FontWeight="SemiBold" Padding="0,0,0,4"/>
-                            <TextBox Text="{Binding ProgressReportIntervalMs}" Style="{StaticResource FluentTextBoxStyle}"/>
-                        </StackPanel>
+                            <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,8,12">
+                                <Label Content="{loc:Localize AddDownloadWindow.RetryDelay}" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                                <TextBox Text="{Binding DefaultRetryDelaySeconds}" Style="{StaticResource FluentTextBoxStyle}"/>
+                            </StackPanel>
 
-                        <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" 
+                            <StackPanel Grid.Row="2" Grid.Column="1" Margin="8,0,0,12">
+                                <Label Content="{loc:Localize OptionsWindow.ProgressReport}" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                                <TextBox Text="{Binding ProgressReportIntervalMs}" Style="{StaticResource FluentTextBoxStyle}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" 
                                    Margin="0,8,0,0">
-                            <CheckBox Content="Cleanup temp files on success" 
+                                <CheckBox Content="{loc:Localize OptionsWindow.CleanupTempFilesOnSuccess}" 
                                       IsChecked="{Binding CleanupTempFilesOnSuccess}" 
                                       Margin="0,0,0,8"/>
 
-                            <CheckBox Content="Cleanup temp files on failure" 
+                                <CheckBox Content="{loc:Localize OptionsWindow.CleanupTempFilesOnFailure}" 
                                       IsChecked="{Binding CleanupTempFilesOnFailure}"/>
-                        </StackPanel>
-                    </Grid>
-                </StackPanel>
-            </Border>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
 
-            <!-- Action Buttons -->
+            </StackPanel>
+        </ScrollViewer>
+
+
+        <!-- Action Buttons -->
+        <Border  Grid.Row="1" Style="{StaticResource CardStyle}"
+                Padding="10">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="Save" 
+                <Button Content="{loc:Localize General.Save}" 
                         Command="{Binding SaveOptionsCommand}" 
                         Style="{StaticResource FluentButtonStyle}"/>
-                <Button Content="Reset to Defaults" 
+                <Button Content="{loc:Localize OptionsWindow.ResetToDefaults}" 
                         Command="{Binding ResetToDefaultsCommand}" 
                         Style="{StaticResource FluentSecondaryButtonStyle}"/>
-                <Button Content="Cancel" 
+                <Button Content="{loc:Localize General.Cancel}" 
                         Command="{Binding CancelCommand}" 
                         Click="CancelButton_Click" 
                         Style="{StaticResource FluentSecondaryButtonStyle}"/>
             </StackPanel>
-        </StackPanel>
-    </ScrollViewer>
+        </Border>
+    </Grid>
 </Window>

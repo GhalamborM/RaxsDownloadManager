@@ -1,9 +1,13 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using RD.Controls;
 using RD.Core.Models;
+using RD.Localization;
+using RD.Services;
+using RD.Views;
+using System.Diagnostics;
 using System.Windows;
 using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
-using MessageBox = System.Windows.MessageBox;
 
 namespace RD.ViewModels;
 #pragma warning disable
@@ -79,12 +83,14 @@ public partial class AddDownloadViewModel : ObservableObject
 
     public static Array AuthenticationTypes => Enum.GetValues<AuthenticationType>();
 
+    private readonly ILocalizationService localizationService = LocalizationService.Instance;
+
     [RelayCommand]
     private void BrowseDownloadPath()
     {
         var dialog = new SaveFileDialog
         {
-            Title = "Select Download Location",
+            Title = localizationService.GetString(MessageUtils.SelectDownloadLocation),
             FileName = FileName,
             CheckPathExists = true
         };
@@ -101,13 +107,13 @@ public partial class AddDownloadViewModel : ObservableObject
     {
         if (string.IsNullOrWhiteSpace(Url))
         {
-            MessageBox.Show("Please enter a valid URL.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            CustomMessageBox.Show(localizationService.GetString(MessageUtils.InvalidUrl), localizationService.GetString(MessageUtils.ValidationError), MessageBoxType.Error);
             return;
         }
 
         if (string.IsNullOrWhiteSpace(FileName))
         {
-            MessageBox.Show("Please enter a file name.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            CustomMessageBox.Show(localizationService.GetString(MessageUtils.EnterFileName), localizationService.GetString(MessageUtils.ValidationError),MessageBoxType.Error);
             return;
         }
 
@@ -119,7 +125,7 @@ public partial class AddDownloadViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Error creating download: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            CustomMessageBox.Show($"{localizationService.GetString(MessageUtils.ErrorCreatingDownload)} {ex.Message}", localizationService.GetString(MessageUtils.Error),MessageBoxType.Error);
         }
     }
 

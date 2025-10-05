@@ -53,4 +53,14 @@ public static class WindowHelper
         {
         }
     }
+
+    public static Window GetActiveWindow()
+    {
+        return App.Current?.Windows.OfType<Window>().SingleOrDefault(x => x.IsActive);
+    }
+
+    public static Window GetLastWindow()
+    {
+        return App.Current?.Windows.OfType<Window>().LastOrDefault();
+    }
 }

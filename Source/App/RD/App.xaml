@@ -13,6 +13,8 @@
                 <!-- Custom Fluent Theme -->
                 <ResourceDictionary Source="Themes/FluentTheme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

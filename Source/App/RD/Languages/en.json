@@ -1,0 +1,115 @@
+{
+  "App": {
+    "Title": "R Download Manager",
+    "Version": "1.0.0",
+    "Description": "A comprehensive, high-performance download manager library for Desktop with advanced features",
+    "Author": "Ramtin Jokar",
+    "Direction": "LTR"
+  },
+  "Translation": {
+    "Language": "English",
+    "Translator": "Translator",
+    "TranslatedBy": "Author"
+  },
+  "General": {
+    "Language": "Language",
+    "Exit": "Exit",
+    "Options": "Options",
+    "SelectLanguage": "Select Language",
+    "FileName": "File Name",
+    "Size": "Size",
+    "Status": "Status",
+    "Progress": "Progress",
+    "Segment": "Segment",
+    "Speed": "Speed",
+    "Range": "Range",
+    "Elapsed": "Elapsed",
+    "ETA": "ETA",
+    "TimeLeft": "Time Left",
+    "Downloaded": "Downloaded",
+    "Pause": "Pause",
+    "Resume": "Resume",
+    "Restart": "Restart",
+    "Close": "Close",
+    "Refresh": "Refresh",
+    "Cancel": "Cancel",
+    "Remove": "Remove",
+    "Save": "Save",
+    "SavePath": "Save Path:",
+    "Browse": "Browse..."
+  },
+  "Languages": {
+    "English": "English",
+    "Persian": "Persian"
+  },
+  "MainWindow": {
+    "AddDownload": "Add Download",
+    "ShowDetails": "Show Details",
+    "Downloads": "Downloads: ",
+    "Active": "Active: ",
+    "Loading": "Loading... "
+  },
+  "AddDownloadWindow": {
+    "AddNewDownload": "Add New Download",
+    "DownloadUrl": "Download URL",
+    "Url": "URL:",
+    "FileName": "File Name:",
+    "SaveTo": "Save to:",
+    "DownloadOptions": "Download Options",
+    "MaxSegments": "Max Segments:",
+    "BufferSize": "Buffer Size:",
+    "Timeout": "Timeout (minutes):",
+    "RetryAttempts": "Retry Attempts:",
+    "RetryDelay": "Retry Delay (seconds):",
+    "OverwriteExistingFile": "Overwrite existing file",
+    "ProxySettings": "Proxy Settings",
+    "UseProxy": "Use Proxy",
+    "ProxyHost": "Host:",
+    "ProxyPort": "Port:",
+    "Username": "Username:",
+    "Password": "Password:",
+    "Authentication": "Authentication",
+    "UseAuthentication": "Use Authentication",
+    "Type": "Type:",
+    "TokenApiKey": "Token/API Key:"
+  },
+  "DownloadDetailsWindow": {
+    "DownloadInformation": "Download Information",
+    "DownloadDetails": "Download Details",
+    "OverallProgress": "Overall Progress",
+    "Statistics": "Statistics",
+    "DownloadSegments": "Download Segments"
+  },
+  "OptionsWindow": {
+    "Options": "Options",
+    "GeneralSettings": "General Settings",
+    "MaxConcurrentDownloads": "Max Concurrent Downloads:",
+    "TempDirectory": "Temp Directory:",
+    "ProgressReport": "Progress Report (ms):",
+    "CleanupTempFilesOnSuccess": "Cleanup temp files on success",
+    "CleanupTempFilesOnFailure": "Cleanup temp files on failure",
+    "ResetToDefaults": "Reset to Defaults",
+    "DefaultDownloadSettings": "Default Download Settings"
+  },
+  "MessageBox": {
+    "OK": "OK",
+    "Cancel": "Cancel",
+    "Yes": "Yes",
+    "No": "No",
+    "Close": "Close"
+  },
+  "Messages": {
+    "ValidationError": "Validation Error",
+    "InvalidUrl": "The provided URL is not valid.",
+    "EnterFileName": "Please enter a file name.",
+    "Error": "Error",
+    "ErrorCreatingDownload": "Error creating download:",
+    "SelectDownloadLocation": "Select Download Location",
+    "FileAlreadyExists": "The file already exists. Do you want to overwrite it?",
+    "DownloadCompleted": "The download has completed successfully.",
+    "DownloadFailed": "The download has failed.",
+    "ConfirmExit": "Are you sure you want to exit? Active downloads will be paused.",
+    "Warning": "Warning",
+    "Information": "Information"
+  }
+}

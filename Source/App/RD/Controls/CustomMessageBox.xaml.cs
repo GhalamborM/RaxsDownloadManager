@@ -1,4 +1,7 @@
-﻿using System;
+﻿using RD.Helpers;
+using RD.Localization;
+using RD.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -55,11 +58,13 @@ public partial class CustomMessageBox : Window
     public MessageBoxType MessageType { get; set; } = MessageBoxType.Information;
     public MessageBoxButtons ButtonType { get; set; } = MessageBoxButtons.OK;
     public List<(string Text, MessageBoxResult Result, bool IsDefault, bool IsCancel)> CustomButtons { get; set; } 
-        = new List<(string, MessageBoxResult, bool, bool)>();
+        = [];
 
     #endregion
 
     #region Constructor
+
+    private static readonly LocalizationService localizationService = LocalizationService.Instance;
 
     public CustomMessageBox()
     {
@@ -77,7 +82,6 @@ public partial class CustomMessageBox : Window
         SetMessageText();
         CreateButtons();
         
-        // Focus the default button or first button
         var defaultButton = ButtonsPanel.Children.OfType<System.Windows.Controls.Button>().FirstOrDefault(b => b.IsDefault);
         (defaultButton ?? ButtonsPanel.Children.OfType<System.Windows.Controls.Button>().FirstOrDefault())?.Focus();
     }
@@ -159,7 +163,7 @@ public partial class CustomMessageBox : Window
     {
         ButtonsPanel.Children.Clear();
 
-        if (ButtonType == MessageBoxButtons.Custom && CustomButtons.Any())
+        if (ButtonType == MessageBoxButtons.Custom && CustomButtons.Count != 0)
         {
             CreateCustomButtons();
         }
@@ -173,24 +177,24 @@ public partial class CustomMessageBox : Window
     {
         var buttons = ButtonType switch
         {
-            MessageBoxButtons.OK => new[] { ("OK", MessageBoxResult.OK, true, true) },
-            MessageBoxButtons.OKCancel => new[] 
-            { 
-                ("OK", MessageBoxResult.OK, true, false),
-                ("Cancel", MessageBoxResult.Cancel, false, true)
-            },
+            MessageBoxButtons.OK => [(localizationService.GetString(MessageBoxUtils.OK), MessageBoxResult.OK, true, true)],
+            MessageBoxButtons.OKCancel =>
+            [
+                (localizationService.GetString(MessageBoxUtils.OK), MessageBoxResult.OK, true, false),
+                (localizationService.GetString(MessageBoxUtils.Cancel), MessageBoxResult.Cancel, false, true)
+            ],
             MessageBoxButtons.YesNo => new[] 
             { 
-                ("Yes", MessageBoxResult.Yes, true, false),
-                ("No", MessageBoxResult.No, false, true)
+                (localizationService.GetString(MessageBoxUtils.Yes), MessageBoxResult.Yes, true, false),
+                (localizationService.GetString(MessageBoxUtils.No), MessageBoxResult.No, false, true)
             },
-            MessageBoxButtons.YesNoCancel => new[] 
-            { 
-                ("Yes", MessageBoxResult.Yes, true, false),
-                ("No", MessageBoxResult.No, false, false),
-                ("Cancel", MessageBoxResult.Cancel, false, true)
-            },
-            _ => new[] { ("OK", MessageBoxResult.OK, true, true) }
+            MessageBoxButtons.YesNoCancel =>
+            [
+                (localizationService.GetString(MessageBoxUtils.Yes), MessageBoxResult.Yes, true, false),
+                (localizationService.GetString(MessageBoxUtils.No), MessageBoxResult.No, false, false),
+                (localizationService.GetString(MessageBoxUtils.Cancel), MessageBoxResult.Cancel, false, true)
+            ],
+            _ => [(localizationService.GetString(MessageBoxUtils.OK), MessageBoxResult.OK, true, true)]
         };
 
         foreach (var (text, result, isDefault, isCancel) in buttons)
@@ -232,7 +236,7 @@ public partial class CustomMessageBox : Window
 
     public static MessageBoxResult Show(string message)
     {
-        return Show(message, "Message", MessageBoxType.Information, MessageBoxButtons.OK);
+        return Show(message, localizationService.GetString(MessageBoxUtils.Message), MessageBoxType.Information, MessageBoxButtons.OK);
     }
 
     public static MessageBoxResult Show(string message, string title)
@@ -247,7 +251,7 @@ public partial class CustomMessageBox : Window
 
     public static MessageBoxResult Show(string message, string title, MessageBoxType type, MessageBoxButtons buttons)
     {
-        return Show(message, title, type, buttons, System.Windows.Application.Current.MainWindow);
+        return Show(message, title, type, buttons, WindowHelper.GetActiveWindow());
     }
 
     public static MessageBoxResult Show(string message, string title, MessageBoxType type, MessageBoxButtons buttons, Window owner)
@@ -258,7 +262,7 @@ public partial class CustomMessageBox : Window
             MessageContent = message,
             MessageType = type,
             ButtonType = buttons,
-            Owner = owner
+            Owner = owner ?? WindowHelper.GetActiveWindow()
         };
 
         messageBox.ShowDialog();
@@ -280,8 +284,8 @@ public partial class CustomMessageBox : Window
             MessageContent = message,
             MessageType = type,
             ButtonType = MessageBoxButtons.Custom,
-            CustomButtons = customButtons.ToList(),
-            Owner = owner
+            CustomButtons = [.. customButtons],
+            Owner = owner ?? WindowHelper.GetActiveWindow()
         };
 
         messageBox.ShowDialog();

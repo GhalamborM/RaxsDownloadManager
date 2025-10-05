@@ -3,10 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:loc="clr-namespace:RD.Localization"
         xmlns:ui="http://schemas.modernwpf.com/2019"
         mc:Ignorable="d"
-        Title="Add New Download" Height="480" Width="600"
-        WindowStartupLocation="CenterOwner"
+        Title="{loc:Localize AddDownloadWindow.AddNewDownload}"
+        Height="480" Width="600"
+        WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         ui:WindowHelper.UseModernWindowStyle="True">
     
@@ -30,7 +32,7 @@
                 <!-- URL Section -->
                 <Border Style="{StaticResource CardStyle}" Margin="0,0,0,16">
                     <StackPanel>
-                        <TextBlock Text="Download URL" 
+                        <TextBlock Text="{loc:Localize AddDownloadWindow.DownloadUrl}" 
                                FontSize="18" 
                                FontWeight="SemiBold" 
                                Margin="0,0,0,16"
@@ -49,42 +51,45 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBlock Grid.Row="0" Grid.Column="0" 
-                                   Text="??" 
+                                   Text="&#xE71B;" 
                                    FontSize="16" 
                                    VerticalAlignment="Center" 
+                                   Style="{StaticResource MessageIconStyle}"
                                    Margin="0,0,12,0"/>
                             <StackPanel Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2">
-                                <Label Content="URL:" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                                <Label Content="{loc:Localize AddDownloadWindow.Url}" FontWeight="SemiBold" Padding="0,0,0,4"/>
                                 <TextBox Text="{Binding Url}" 
                                      Style="{StaticResource FluentTextBoxStyle}"
                                      Margin="0,0,0,12"/>
                             </StackPanel>
 
                             <TextBlock Grid.Row="1" Grid.Column="0" 
-                                   Text="??" 
+                                   Text="&#xEC51;" 
                                    FontSize="16" 
                                    VerticalAlignment="Center" 
-                                   Margin="0,0,12,0"/>
+                                   Margin="0,0,12,0"
+                                   Style="{StaticResource MessageIconStyle}"/>
                             <StackPanel Grid.Row="1" Grid.Column="1">
-                                <Label Content="File Name:" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                                <Label Content="{loc:Localize AddDownloadWindow.FileName}" FontWeight="SemiBold" Padding="0,0,0,4"/>
                                 <TextBox Text="{Binding FileName}" 
                                      Style="{StaticResource FluentTextBoxStyle}"
                                      Margin="0,0,8,12"/>
                             </StackPanel>
 
                             <TextBlock Grid.Row="2" Grid.Column="0" 
-                                   Text="??" 
+                                   Text="&#xE74E;" 
                                    FontSize="16" 
                                    VerticalAlignment="Center" 
-                                   Margin="0,0,12,0"/>
+                                   Margin="0,0,12,0"
+                                   Style="{StaticResource MessageIconStyle}"/>
                             <StackPanel Grid.Row="2" Grid.Column="1">
-                                <Label Content="Save to:" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                                <Label Content="{loc:Localize AddDownloadWindow.SaveTo}" FontWeight="SemiBold" Padding="0,0,0,4"/>
                                 <TextBox Text="{Binding DownloadPath}" 
                                      Style="{StaticResource FluentTextBoxStyle}"
                                      Margin="0,0,8,0"/>
                             </StackPanel>
                             <Button Grid.Row="2" Grid.Column="2" 
-                                Content="Browse..." 
+                                Content="{loc:Localize General.Browse}" 
                                 Style="{StaticResource FluentSecondaryButtonStyle}"
                                 Command="{Binding BrowseDownloadPathCommand}"
                                 VerticalAlignment="Bottom"/>
@@ -95,7 +100,7 @@
                 <!-- Download Options -->
                 <Border Style="{StaticResource CardStyle}" Margin="0,0,0,16">
                     <StackPanel>
-                        <TextBlock Text="Download Options" 
+                        <TextBlock Text="{loc:Localize AddDownloadWindow.DownloadOptions}" 
                                FontSize="18" 
                                FontWeight="SemiBold" 
                                Margin="0,0,0,16"
@@ -114,34 +119,34 @@
                             </Grid.ColumnDefinitions>
 
                             <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,8,12">
-                                <Label Content="Max Segments:" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                                <Label Content="{loc:Localize AddDownloadWindow.MaxSegments}" FontWeight="SemiBold" Padding="0,0,0,4"/>
                                 <TextBox Text="{Binding MaxSegments}" Style="{StaticResource FluentTextBoxStyle}"/>
                             </StackPanel>
 
                             <StackPanel Grid.Row="0" Grid.Column="1" Margin="8,0,0,12">
-                                <Label Content="Buffer Size:" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                                <Label Content="{loc:Localize AddDownloadWindow.BufferSize}" FontWeight="SemiBold" Padding="0,0,0,4"/>
                                 <TextBox Text="{Binding BufferSize}" Style="{StaticResource FluentTextBoxStyle}"/>
                             </StackPanel>
 
                             <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,8,12">
-                                <Label Content="Timeout (minutes):" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                                <Label Content="{loc:Localize AddDownloadWindow.Timeout}" FontWeight="SemiBold" Padding="0,0,0,4"/>
                                 <TextBox Text="{Binding TimeoutMinutes}" Style="{StaticResource FluentTextBoxStyle}"/>
                             </StackPanel>
 
                             <StackPanel Grid.Row="1" Grid.Column="1" Margin="8,0,0,12">
-                                <Label Content="Retry Attempts:" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                                <Label Content="{loc:Localize AddDownloadWindow.RetryAttempts}" FontWeight="SemiBold" Padding="0,0,0,4"/>
                                 <TextBox Text="{Binding RetryAttempts}" Style="{StaticResource FluentTextBoxStyle}"/>
                             </StackPanel>
 
                             <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,8,12">
-                                <Label Content="Retry Delay (seconds):" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                                <Label Content="{loc:Localize AddDownloadWindow.RetryDelay}" FontWeight="SemiBold" Padding="0,0,0,4"/>
                                 <TextBox Text="{Binding RetryDelaySeconds}" Style="{StaticResource FluentTextBoxStyle}"/>
                             </StackPanel>
 
                             <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" 
                                    Orientation="Horizontal" 
                                    Margin="0,8,0,0">
-                                <CheckBox Content="Overwrite existing file" 
+                                <CheckBox Content="OverwriteExistingFile" 
                                       IsChecked="{Binding OverwriteExisting}" 
                                       Margin="0,0,24,0"/>
                                 <!--<CheckBox Content="Enable resume" 
@@ -152,10 +157,10 @@
                 </Border>
 
                 <!-- Proxy Settings -->
-                <Expander Header="Proxy Settings" Margin="0,0,0,16">
+                <Expander Header="{loc:Localize AddDownloadWindow.ProxySettings}" Margin="0,0,0,16">
                     <Border Style="{StaticResource CardStyle}" Margin="0,8,0,0">
                         <StackPanel>
-                            <CheckBox Content="Use Proxy" 
+                            <CheckBox Content="{loc:Localize AddDownloadWindow.UseProxy}" 
                                  IsChecked="{Binding UseProxy}" 
                                  Margin="0,0,0,16"/>
 
@@ -170,22 +175,22 @@
                                 </Grid.ColumnDefinitions>
 
                                 <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,8,12">
-                                    <Label Content="Host:" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                                    <Label Content="{loc:Localize AddDownloadWindow.ProxyHost}" FontWeight="SemiBold" Padding="0,0,0,4"/>
                                     <TextBox Text="{Binding ProxyHost}" Style="{StaticResource FluentTextBoxStyle}"/>
                                 </StackPanel>
 
                                 <StackPanel Grid.Row="0" Grid.Column="1" Margin="8,0,0,12">
-                                    <Label Content="Port:" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                                    <Label Content="{loc:Localize AddDownloadWindow.ProxyPort}" FontWeight="SemiBold" Padding="0,0,0,4"/>
                                     <TextBox Text="{Binding ProxyPort}" Style="{StaticResource FluentTextBoxStyle}"/>
                                 </StackPanel>
 
                                 <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,8,0">
-                                    <Label Content="Username:" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                                    <Label Content="{loc:Localize AddDownloadWindow.Username}" FontWeight="SemiBold" Padding="0,0,0,4"/>
                                     <TextBox Text="{Binding ProxyUsername}" Style="{StaticResource FluentTextBoxStyle}"/>
                                 </StackPanel>
 
                                 <StackPanel Grid.Row="1" Grid.Column="1" Margin="8,0,0,0">
-                                    <Label Content="Password:" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                                    <Label Content="{loc:Localize AddDownloadWindow.Password}" FontWeight="SemiBold" Padding="0,0,0,4"/>
                                     <PasswordBox x:Name="ProxyPasswordBox" 
                                            Height="36" 
                                            Margin="4"
@@ -197,10 +202,10 @@
                 </Expander>
 
                 <!-- Authentication Settings -->
-                <Expander Header="Authentication" Margin="0,0,0,24">
+                <Expander Header="{loc:Localize AddDownloadWindow.Authentication}" Margin="0,0,0,24">
                     <Border Style="{StaticResource CardStyle}" Margin="0,8,0,0">
                         <StackPanel>
-                            <CheckBox Content="Use Authentication" 
+                            <CheckBox Content="{loc:Localize AddDownloadWindow.UseAuthentication}" 
                                  IsChecked="{Binding UseAuthentication}" 
                                  Margin="0,0,0,16"/>
 
@@ -213,7 +218,7 @@
                                 </Grid.RowDefinitions>
 
                                 <StackPanel Grid.Row="0" Margin="0,0,0,12">
-                                    <Label Content="Type:" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                                    <Label Content="{loc:Localize AddDownloadWindow.Type}" FontWeight="SemiBold" Padding="0,0,0,4"/>
                                     <ComboBox ItemsSource="{Binding AuthenticationTypes}" 
                                          SelectedItem="{Binding AuthenticationType}" 
                                          Height="36"
@@ -221,12 +226,12 @@
                                 </StackPanel>
 
                                 <StackPanel Grid.Row="1" Margin="0,0,0,12">
-                                    <Label Content="Username:" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                                    <Label Content="{loc:Localize AddDownloadWindow.Username}" FontWeight="SemiBold" Padding="0,0,0,4"/>
                                     <TextBox Text="{Binding AuthUsername}" Style="{StaticResource FluentTextBoxStyle}"/>
                                 </StackPanel>
 
                                 <StackPanel Grid.Row="2" Margin="0,0,0,12">
-                                    <Label Content="Password:" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                                    <Label Content="{loc:Localize AddDownloadWindow.Password}" FontWeight="SemiBold" Padding="0,0,0,4"/>
                                     <PasswordBox x:Name="AuthPasswordBox" 
                                            Height="36" 
                                            Margin="4"
@@ -234,7 +239,7 @@
                                 </StackPanel>
 
                                 <StackPanel Grid.Row="3">
-                                    <Label Content="Token/API Key:" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                                    <Label Content="{loc:Localize AddDownloadWindow.TokenApiKey}" FontWeight="SemiBold" Padding="0,0,0,4"/>
                                     <TextBox Text="{Binding AuthToken}" Style="{StaticResource FluentTextBoxStyle}"/>
                                 </StackPanel>
                             </Grid>
@@ -250,10 +255,10 @@
                 Padding="10">
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="Add Download" 
+                <Button Content="{loc:Localize MainWindow.AddDownload}" 
                     Command="{Binding AddDownloadCommand}" 
                     Style="{StaticResource FluentButtonStyle}"/>
-                <Button Content="Cancel" 
+                <Button Content="{loc:Localize General.Cancel}" 
                     Command="{Binding CancelCommand}" 
                     Click="CancelButton_Click" 
                     Style="{StaticResource FluentSecondaryButtonStyle}"/>

@@ -252,5 +252,16 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
+    <FontFamily x:Key="MDL2Font">pack://application:,,,/RD;component/Assets/Fonts/#Segoe MDL2 Assets</FontFamily>
 
+    <!-- Icon styles for different message types -->
+    <Style x:Key="MessageIconStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource MDL2Font}"/>
+        <Setter Property="FontSize" Value="32"/>
+        <Setter Property="Margin" Value="0,0,16,0"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="Margin" Value="0,8,16,0"/>
+    </Style>
+    
 </ResourceDictionary>
