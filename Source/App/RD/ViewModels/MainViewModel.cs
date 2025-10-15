@@ -80,6 +80,16 @@ public partial class MainViewModel : ObservableObject
     }
 
     [RelayCommand]
+    private void CheckForUpdates()
+    {
+        var updateWindow = App.ServiceProvider.GetRequiredService<UpdateWindow>();
+        var viewModel = App.ServiceProvider.GetRequiredService<UpdateViewModel>();
+        updateWindow.DataContext = viewModel;
+        updateWindow.Owner = Application.Current.MainWindow;
+        updateWindow.ShowDialog();
+    }
+
+    [RelayCommand]
     private async Task ResumeDownloadAsync()
     {
         if (SelectedDownload?.Status == DownloadStatus.Paused)

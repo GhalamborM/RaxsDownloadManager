@@ -52,6 +52,8 @@
             <ui:AppBarSeparator/>
             <!--<ui:AppBarButton Icon="Calendar" Label="Task Scheduler" Command="{Binding ShowSchedulerCommand}"/>-->
             <ui:AppBarButton Icon="Setting" Label="{loc:Localize General.Options}" Command="{Binding ShowOptionsCommand}"/>
+            <ui:AppBarSeparator/>
+            <ui:AppBarButton Icon="Globe" Label="Check for Updates" Command="{Binding CheckForUpdatesCommand}"/>
         </ui:CommandBar>
 
         <!-- Downloads Card -->

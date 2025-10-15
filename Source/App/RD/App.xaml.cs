@@ -75,6 +75,7 @@ public partial class App : System.Windows.Application
 
         // Register WPF-specific services
         services.AddSingleton<IDataPersistenceService, DataPersistenceService>();
+        services.AddSingleton<IUpdateService, UpdateService>();
 
         // Register ViewModels
         services.AddTransient<MainViewModel>();
@@ -83,6 +84,7 @@ public partial class App : System.Windows.Application
         services.AddTransient<DownloadDetailsViewModel>();
         services.AddTransient<SchedulerViewModel>();
         services.AddTransient<TaskSelectionViewModel>();
+        services.AddTransient<UpdateViewModel>();
 
         // Register Views
         services.AddTransient<MainWindow>();
@@ -91,6 +93,7 @@ public partial class App : System.Windows.Application
         services.AddTransient<DownloadDetailsWindow>();
         services.AddTransient<SchedulerWindow>();
         services.AddTransient<TaskSelectionWindow>();
+        services.AddTransient<UpdateWindow>();
     }
 
     protected override async void OnExit(ExitEventArgs e)
