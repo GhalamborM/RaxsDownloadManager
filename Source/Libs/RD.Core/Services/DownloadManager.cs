@@ -211,6 +211,15 @@ public partial class DownloadManager : IDownloadManager, IDisposable
         return [.. _activeDownloads.Values.Select(d => d.Progress)];
     }
 
+    public IEnumerable<DownloadSegment>? GetDownloadSegments(string downloadId)
+    {
+        if (_activeDownloads.TryGetValue(downloadId, out var downloadTask))
+        {
+            return downloadTask.Segments?.ToList();
+        }
+        return null;
+    }
+
     private async Task ExecuteDownloadAsync(DownloadTask downloadTask)
     {
         try

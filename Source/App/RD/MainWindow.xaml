@@ -16,6 +16,7 @@
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <converters:InverseBooleanToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
         <converters:BytesToStringConverter x:Key="BytesToStringConverter"/>
+        <converters:StatusToVisibilityConverter x:Key="StatusToVisibilityConverter"/>
         
         <!-- Mica-like background -->
         <LinearGradientBrush x:Key="MicaBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
@@ -104,7 +105,7 @@
                     </DataGrid.ContextMenu>
                     
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="{loc:Localize General.FileName}" Binding="{Binding FileName}" Width="200"/>
+                        <DataGridTextColumn Header="{loc:Localize General.FileName}" Binding="{Binding FileName}" Width="340"/>
                         <DataGridTextColumn Header="{loc:Localize General.Status}" Binding="{Binding StatusText}" Width="100"/>
                         <DataGridTemplateColumn Header="{loc:Localize General.Size}" Width="130">
                             <DataGridTemplateColumn.CellTemplate>
@@ -112,7 +113,8 @@
                                     <Grid Margin="8,4">
                                         <ProgressBar Value="{Binding PercentageComplete, Mode=OneWay}" 
                                                  VerticalAlignment="Bottom"
-                                                 Maximum="100" Margin="0 -3"/>
+                                                 Maximum="100" Margin="0 -3"
+                                                     Visibility="{Binding Converter={StaticResource StatusToVisibilityConverter}}"/>
                                         <TextBlock 
                                                  HorizontalAlignment="Center" 
                                                  FontSize="11"
@@ -121,7 +123,8 @@
                                                  Foreground="{StaticResource SystemControlForegroundBaseHighBrush}">
                                             
                                             <Run Text="{Binding SizeText, Mode=OneWay}" />
-                                            <LineBreak/>        <Run Text="{Binding PercentageComplete, StringFormat={}{0:F1}%, Mode=OneWay}"  />
+                                            <LineBreak/>
+                                            <Run Text="{Binding PercentageComplete, StringFormat={}{0:F1}%, Mode=OneWay,Converter={StaticResource StatusToVisibilityConverter}}"  />
                                         </TextBlock>
                                         <!--<TextBlock Text="{Binding PercentageComplete, StringFormat={}{0:F1}%, Mode=OneWay}" 
                                                  HorizontalAlignment="Center" 

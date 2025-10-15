@@ -116,7 +116,6 @@
                             <StackPanel Grid.Row="4" Grid.Column="1" Margin="8,0,0,0">
                                 <ProgressBar Value="{Binding OverallProgress, Mode=OneWay}" 
                                     Maximum="100" 
-                                    Style="{StaticResource FluentProgressBarStyle}"
                                     Margin="0,0,0,4"/>
                                 <TextBlock Text="{Binding OverallProgress, StringFormat={}{0:F1}%, Mode=OneWay}" 
                                    FontWeight="SemiBold" 
@@ -237,25 +236,25 @@
 
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="{loc:Localize General.Segment}" Binding="{Binding Id, Mode=OneWay}" Width="70"/>
-                                <DataGridTextColumn Header="{loc:Localize General.Range}" Binding="{Binding RangeText, Mode=OneWay}" Width="150"/>
+                                <!--<DataGridTextColumn Header="{loc:Localize General.Range}" Binding="{Binding RangeText, Mode=OneWay}" Width="150"/>-->
+                                <DataGridTextColumn Header="{loc:Localize General.Downloaded}" Binding="{Binding ProgressText, Mode=OneWay}" Width="120"/>
                                 <DataGridTextColumn Header="{loc:Localize General.Status}" Binding="{Binding StatusText, Mode=OneWay}" Width="100"/>
                                 <DataGridTemplateColumn Header="{loc:Localize General.Progress}" Width="*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <Grid Margin="8,4">
                                                 <ProgressBar Value="{Binding PercentageComplete, Mode=OneWay}" 
-                                                    Maximum="100" 
-                                                    Style="{StaticResource FluentProgressBarStyle}"/>
+                                                             VerticalAlignment="Bottom"
+                                                             Maximum="100" Margin="0 -3"/>
                                                 <TextBlock Text="{Binding PercentageComplete, StringFormat={}{0:F1}%, Mode=OneWay}" 
                                                  HorizontalAlignment="Center" 
-                                                 FontSize="10"
+                                                 FontSize="11"
                                                  FontWeight="Medium"
                                                  VerticalAlignment="Center"/>
                                             </Grid>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTextColumn Header="{loc:Localize General.Downloaded}" Binding="{Binding ProgressText, Mode=OneWay}" Width="120"/>
                             </DataGrid.Columns>
                         </DataGrid>
                     </Grid>

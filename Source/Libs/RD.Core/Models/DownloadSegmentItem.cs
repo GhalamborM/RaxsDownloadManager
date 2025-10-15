@@ -1,16 +1,31 @@
+using CommunityToolkit.Mvvm.ComponentModel;
 using RD.Core.Helpers;
 
 namespace RD.Core.Models;
 
-public class DownloadSegmentItem
+public partial class DownloadSegmentItem : ObservableObject
 {
-    public int Id { get; set; }
-    public string DownloadId { get; set; } = string.Empty;
-    public long StartByte { get; set; }
-    public long EndByte { get; set; }
-    public long DownloadedBytes { get; set; }
-    public DownloadStatus Status { get; set; }
-    public string? ErrorMessage { get; set; }
+    [ObservableProperty]
+    private int _id;
+
+    [ObservableProperty]
+    private string _downloadId = string.Empty;
+
+    [ObservableProperty]
+    private long _startByte;
+
+    [ObservableProperty]
+    private long _endByte;
+
+    [ObservableProperty]
+    private long _downloadedBytes;
+
+    [ObservableProperty]
+    private DownloadStatus _status;
+
+    [ObservableProperty]
+    private string? _errorMessage;
+
     public long Length => EndByte - StartByte + 1;
     public bool IsCompleted => DownloadedBytes >= Length;
     public double PercentageComplete => Length > 0 ? (double)DownloadedBytes / Length * 100 : 0;
@@ -29,5 +44,12 @@ public class DownloadSegmentItem
         DownloadedBytes = segment.DownloadedBytes;
         Status = segment.Status;
         ErrorMessage = segment.ErrorMessage;
+        
+        //OnPropertyChanged(nameof(Length));
+        //OnPropertyChanged(nameof(IsCompleted));
+        //OnPropertyChanged(nameof(PercentageComplete));
+        //OnPropertyChanged(nameof(StatusText));
+        //OnPropertyChanged(nameof(RangeText));
+        //OnPropertyChanged(nameof(ProgressText));
     }
 }

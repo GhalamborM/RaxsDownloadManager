@@ -40,6 +40,11 @@ public interface IDownloadManager : IDisposable
     IEnumerable<DownloadProgress> GetAllDownloadProgress();
 
     /// <summary>
+    /// Gets the segments of a specific download
+    /// </summary>
+    IEnumerable<DownloadSegment>? GetDownloadSegments(string downloadId);
+
+    /// <summary>
     /// Event fired when download progress is updated
     /// </summary>
     event EventHandler<DownloadProgress> ProgressChanged;

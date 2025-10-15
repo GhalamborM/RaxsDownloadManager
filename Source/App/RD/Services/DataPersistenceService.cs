@@ -19,7 +19,7 @@ public class DataPersistenceService : IDataPersistenceService
     };
     public DataPersistenceService()
     {
-        _dataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "RD", "WPF");
+        _dataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "RD", "Ramtin");
         _downloadsFile = Path.Combine(_dataDirectory, "downloads.json");
         _optionsFile = Path.Combine(_dataDirectory, "options.json");
 

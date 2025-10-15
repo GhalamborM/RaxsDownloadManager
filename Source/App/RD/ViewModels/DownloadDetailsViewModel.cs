@@ -106,14 +106,17 @@ public partial class DownloadDetailsViewModel(IDownloadManager downloadManager) 
         Url = _downloadItem.Url;
         FilePath = _downloadItem.FilePath;
         Status = _downloadItem.StatusText;
-        OverallProgress = _downloadItem.PercentageComplete;
+        OverallProgress = IsCompleted() ? 100 : _downloadItem.PercentageComplete;
         SizeText = _downloadItem.SizeText;
-        SpeedText = _downloadItem.SpeedText;
-        ElapsedTime = FormatTimeSpan(_downloadItem.ElapsedTime);
-        EstimatedTimeRemaining = _downloadItem.EstimatedTimeRemaining?.ToString(@"hh\:mm\:ss") ?? "Unknown";
+        SpeedText = IsCompleted() ? "" : _downloadItem.SpeedText;
+        ElapsedTime = IsCompleted() ? "" : FormatTimeSpan(_downloadItem.ElapsedTime);
+        EstimatedTimeRemaining = IsCompleted() ? "" : _downloadItem.EstimatedTimeRemaining?.ToString(@"hh\:mm\:ss") ?? "Unknown";
 
         CanPause = _downloadItem.Status == DownloadStatus.Downloading;
         CanResume = _downloadItem.Status == DownloadStatus.Paused;
+
+        bool IsCompleted() => _downloadItem!.Status == DownloadStatus.Completed;
+
     }
 
     private async Task UpdateSegmentsAsync()
@@ -130,20 +133,49 @@ public partial class DownloadDetailsViewModel(IDownloadManager downloadManager) 
                 UpdateDisplay();
             }
 
-            // Note: The actual DownloadManager interface doesn't expose segments directly
-            // In a real implementation, you would need to extend the interface to get segment information
-            // For now, we'll simulate some segments for demonstration
-            if (Segments.Count == 0 && _downloadItem.Status != DownloadStatus.Pending)
+            // Get real-time segment information from the download manager
+            var segments = _downloadManager.GetDownloadSegments(_downloadItem.DownloadId);
+            if (segments != null && segments.Any())
             {
+                UpdateSegmentsFromDownloadManager(segments);
+            }
+            else if (Segments.Count == 0 && _downloadItem.Status != DownloadStatus.Pending)
+            {
+                // Fallback to dummy segments if download manager doesn't have segments yet
                 CreateDummySegments();
             }
         });
     }
 
+    private void UpdateSegmentsFromDownloadManager(IEnumerable<DownloadSegment> segments)
+    {
+        var segmentList = segments.ToList();
+        
+        foreach (var segment in segmentList)
+        {
+            var existingSegment = Segments.FirstOrDefault(s => s.Id == segment.Id);
+            if (existingSegment != null)
+            {
+                existingSegment.UpdateFromSegment(segment);
+            }
+            else
+            {
+                var segmentItem = new DownloadSegmentItem();
+                segmentItem.UpdateFromSegment(segment);
+                Segments.Add(segmentItem);
+            }
+        }
+
+        // Remove segments that no longer exist
+        var segmentsToRemove = Segments.Where(s => !segmentList.Any(seg => seg.Id == s.Id)).ToList();
+        foreach (var segment in segmentsToRemove)
+        {
+            Segments.Remove(segment);
+        }
+    }
+
     private void CreateDummySegments()
     {
-        // This is a placeholder implementation since the current IDownloadManager doesn't expose segments
-        // In a real implementation, you would need to modify the download manager to provide segment information
         if (_downloadItem == null || _downloadItem.TotalBytes <= 0) return;
 
         var segmentCount = Math.Min(8, _downloadItem.ActiveSegments > 0 ? _downloadItem.ActiveSegments : 4);

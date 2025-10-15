@@ -76,7 +76,16 @@ public class DownloadItem : INotifyPropertyChanged
     public DownloadStatus Status
     {
         get => _status;
-        set => SetProperty(ref _status, value);
+        set
+        {
+            SetProperty(ref _status, value);
+            if (value is DownloadStatus.Completed)
+            {
+                PercentageComplete = 100;
+                BytesPerSecond = -1;
+                EstimatedTimeRemaining = null;
+            }
+        }
     }
 
     public double PercentageComplete
@@ -172,10 +181,11 @@ public class DownloadItem : INotifyPropertyChanged
 
     public string StatusText => Helper.GetStatusText(Status);
 
-    public string SizeText => $"{Helper.FormatBytes(DownloadedBytes)} / {Helper.FormatBytes(TotalBytes)}";
+    public string SizeText => IsCompleted ? Helper.FormatBytes(TotalBytes) : $"{Helper.FormatBytes(DownloadedBytes)} / {Helper.FormatBytes(TotalBytes)}";
 
-    public string SpeedText => $"{Helper.FormatBytes(BytesPerSecond)}/s";
+    public string SpeedText => IsCompleted ? "" : $"{Helper.FormatBytes(BytesPerSecond)}/s";
 
+    private bool IsCompleted => Status is DownloadStatus.Completed;
     public void UpdateFromProgress(DownloadProgress progress)
     {
         DownloadId = progress.DownloadId;
