@@ -18,7 +18,7 @@ public partial class AddDownloadViewModel : ObservableObject
     private string _fileName = string.Empty;
 
     [ObservableProperty]
-    private string _downloadPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+    private string _downloadPath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
 
     [ObservableProperty]
     private int _maxSegments = 8;
