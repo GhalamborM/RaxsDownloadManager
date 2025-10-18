@@ -4,6 +4,7 @@ public class DownloadManagerOptions
 {
     public int MaxConcurrentDownloads { get; set; } = 3;
     public string TempDirectory { get; set; } = Path.GetTempPath();
+    public string DefaultDownloadDirectory { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
     public int DefaultMaxSegments { get; set; } = 8;
     public int DefaultBufferSize { get; set; } = 8192;
     public TimeSpan DefaultTimeout { get; set; } = TimeSpan.FromMinutes(5);

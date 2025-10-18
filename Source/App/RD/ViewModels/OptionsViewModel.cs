@@ -1,7 +1,10 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using RD.Controls;
 using RD.Core.Models;
+using RD.Localization;
 using RD.Services;
+using System.Diagnostics;
 using MessageBox = System.Windows.MessageBox;
 
 namespace RD.ViewModels;
@@ -16,6 +19,9 @@ public partial class OptionsViewModel : ObservableObject
 
     [ObservableProperty]
     private string _tempDirectory = string.Empty;
+
+    [ObservableProperty]
+    private string _defaultDownloadDirectory = string.Empty;
 
     [ObservableProperty]
     private int _defaultMaxSegments;
@@ -51,16 +57,32 @@ public partial class OptionsViewModel : ObservableObject
     [RelayCommand]
     private void BrowseTempDirectory()
     {
-        using var dialog = new System.Windows.Forms.FolderBrowserDialog
+        using var dialog = new FolderBrowserDialog
         {
-            Description = "Select Temporary Directory",
+            Description = OptionsUtils.SelectTemporaryDirectory,
             SelectedPath = TempDirectory,
             ShowNewFolderButton = true
         };
 
-        if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+        if (dialog.ShowDialog() == DialogResult.OK)
         {
             TempDirectory = dialog.SelectedPath;
+        }
+    }
+
+    [RelayCommand]
+    private void BrowseDownloadDirectory()
+    {
+        using var dialog = new FolderBrowserDialog
+        {
+            Description = OptionsUtils.SelectDefaultDownloadDirectory,
+            SelectedPath = DefaultDownloadDirectory,
+            ShowNewFolderButton = true
+        };
+
+        if (dialog.ShowDialog() == DialogResult.OK)
+        {
+            DefaultDownloadDirectory = dialog.SelectedPath;
         }
     }
 
@@ -73,6 +95,7 @@ public partial class OptionsViewModel : ObservableObject
             {
                 MaxConcurrentDownloads = MaxConcurrentDownloads,
                 TempDirectory = TempDirectory,
+                DefaultDownloadDirectory = DefaultDownloadDirectory,
                 DefaultMaxSegments = DefaultMaxSegments,
                 DefaultBufferSize = DefaultBufferSize,
                 DefaultTimeout = TimeSpan.FromMinutes(DefaultTimeoutMinutes),
@@ -85,14 +108,10 @@ public partial class OptionsViewModel : ObservableObject
 
             await _dataPersistenceService.SaveOptionsAsync(options);
             _originalOptions = options;
-
-            MessageBox.Show("Options saved successfully. Please restart the application for changes to take effect.", 
-                "Options Saved", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Failed to save options: {ex.Message}", "Error", 
-                System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+            CustomMessageBox.Show($"{MessageUtils.FailedToSaveOptions} {ex.Message}", MessageUtils.Error, MessageBoxType.Error);
         }
     }
 
@@ -118,8 +137,7 @@ public partial class OptionsViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Failed to load options: {ex.Message}", "Error", 
-                System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+            Debug.WriteLine($"Failed to load options: {ex.Message}");
             LoadFromOptions(new DownloadManagerOptions());
         }
     }
@@ -128,6 +146,7 @@ public partial class OptionsViewModel : ObservableObject
     {
         MaxConcurrentDownloads = options.MaxConcurrentDownloads;
         TempDirectory = options.TempDirectory;
+        DefaultDownloadDirectory = options.DefaultDownloadDirectory;
         DefaultMaxSegments = options.DefaultMaxSegments;
         DefaultBufferSize = options.DefaultBufferSize;
         DefaultTimeoutMinutes = (int)options.DefaultTimeout.TotalMinutes;

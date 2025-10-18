@@ -4,9 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:loc="clr-namespace:RD.Localization"
-        xmlns:ui="http://schemas.modernwpf.com/2019"
+        xmlns:ui="http://schemas.modernwpf.com/2019" 
+        xmlns:viewmodels="clr-namespace:RD.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:OptionsViewModel}"
         mc:Ignorable="d"
-        Title="{loc:Localize OptionsWindow.Options}" Height="600" Width="550"
+        Title="{loc:Localize OptionsWindow.Options}" Height="510" Width="550"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         ui:WindowHelper.UseModernWindowStyle="True">
@@ -40,6 +41,7 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -53,12 +55,24 @@
                             </StackPanel>
 
                             <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,8,0">
+                                <Label Content="{loc:Localize OptionsWindow.DefaultDownloadDirectory}" FontWeight="SemiBold" Padding="0,0,0,4"/>
+                                <TextBox Text="{Binding DefaultDownloadDirectory}" 
+                                     Style="{StaticResource FluentTextBoxStyle}"/>
+                            </StackPanel>
+
+                            <Button Grid.Row="1" Grid.Column="1"
+                                Content="{loc:Localize General.Browse}" 
+                                Style="{StaticResource FluentSecondaryButtonStyle}"
+                                Command="{Binding BrowseDownloadDirectoryCommand}"
+                                VerticalAlignment="Bottom"/>
+                            
+                            <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,8,12">
                                 <Label Content="{loc:Localize OptionsWindow.TempDirectory}" FontWeight="SemiBold" Padding="0,0,0,4"/>
                                 <TextBox Text="{Binding TempDirectory}" 
                                      Style="{StaticResource FluentTextBoxStyle}"/>
                             </StackPanel>
 
-                            <Button Grid.Row="1" Grid.Column="1"
+                            <Button Grid.Row="2" Grid.Column="1"
                                 Content="{loc:Localize General.Browse}" 
                                 Style="{StaticResource FluentSecondaryButtonStyle}"
                                 Command="{Binding BrowseTempDirectoryCommand}"

@@ -8,5 +8,6 @@ public static class MessageUtils
     public const string Error = "Messages.Error";
     public const string ErrorCreatingDownload = "Messages.ErrorCreatingDownload";
     public const string SelectDownloadLocation = "Messages.SelectDownloadLocation";
+    public const string FailedToSaveOptions = "Messages.FailedToSaveOptions";
 }
 

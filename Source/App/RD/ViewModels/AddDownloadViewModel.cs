@@ -11,6 +11,8 @@ namespace RD.ViewModels;
 #pragma warning disable
 public partial class AddDownloadViewModel : ObservableObject
 {
+    private readonly IDataPersistenceService _dataPersistenceService;
+
     [ObservableProperty]
     private string _url = string.Empty;
 
@@ -18,7 +20,7 @@ public partial class AddDownloadViewModel : ObservableObject
     private string _fileName = string.Empty;
 
     [ObservableProperty]
-    private string _downloadPath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
+    private string _downloadPath = string.Empty;
 
     [ObservableProperty]
     private int _maxSegments = 8;
@@ -83,8 +85,24 @@ public partial class AddDownloadViewModel : ObservableObject
 
     private readonly ILocalizationService localizationService = LocalizationService.Instance;
 
-    public AddDownloadViewModel()
+    public AddDownloadViewModel(IDataPersistenceService dataPersistenceService)
     {
+        _dataPersistenceService = dataPersistenceService;
+        _ = InitializeAsync();
+    }
+
+    private async Task InitializeAsync()
+    {
+        try
+        {
+            var options = await _dataPersistenceService.LoadOptionsAsync();
+            DownloadPath = options.DefaultDownloadDirectory;
+        }
+        catch
+        {
+            DownloadPath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
+        }
+        
         CopyFromClipboard();
     }
 

@@ -85,11 +85,14 @@
     "GeneralSettings": "General Settings",
     "MaxConcurrentDownloads": "Max Concurrent Downloads:",
     "TempDirectory": "Temp Directory:",
+    "DefaultDownloadDirectory": "Default Download Directory:",
     "ProgressReport": "Progress Report (ms):",
     "CleanupTempFilesOnSuccess": "Cleanup temp files on success",
     "CleanupTempFilesOnFailure": "Cleanup temp files on failure",
     "ResetToDefaults": "Reset to Defaults",
-    "DefaultDownloadSettings": "Default Download Settings"
+    "DefaultDownloadSettings": "Default Download Settings",
+    "SelectTemporaryDirectory": "Select Temporary Directory",
+    "SelectDefaultDownloadDirectory": "Select Default Download Directory"
   },
   "MessageBox": {
     "OK": "OK",
@@ -110,6 +113,7 @@
     "DownloadFailed": "The download has failed.",
     "ConfirmExit": "Are you sure you want to exit? Active downloads will be paused.",
     "Warning": "Warning",
-    "Information": "Information"
+    "Information": "Information",
+    "FailedToSaveOptions": "Failed to save options:"
   }
 }
