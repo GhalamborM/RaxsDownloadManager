@@ -8,7 +8,7 @@
         xmlns:converters="clr-namespace:RD.Converters"
         xmlns:ui="http://schemas.modernwpf.com/2019"
         mc:Ignorable="d"
-        Title="{loc:Localize App.Title}" Height="500" Width="800"
+        Title="{loc:Localize App.Title}" Height="500" Width="1000"
         WindowStartupLocation="CenterScreen"
         ui:WindowHelper.UseModernWindowStyle="True">
     
@@ -17,6 +17,8 @@
         <converters:InverseBooleanToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
         <converters:BytesToStringConverter x:Key="BytesToStringConverter"/>
         <converters:StatusToVisibilityConverter x:Key="StatusToVisibilityConverter"/>
+        <converters:CategoryPanelIconConverter x:Key="CategoryPanelIconConverter"/>
+        <converters:CategoryPanelTooltipConverter x:Key="CategoryPanelTooltipConverter"/>
         
         <!-- Mica-like background -->
         <LinearGradientBrush x:Key="MicaBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
@@ -31,6 +33,18 @@
             <Setter Property="Padding" Value="16,8"/>
         </Style>
         
+        <!-- TreeView Style -->
+        <Style x:Key="CategoryTreeViewStyle" TargetType="TreeView">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="4"/>
+        </Style>
+        
+        <HierarchicalDataTemplate x:Key="CategoryTreeTemplate" ItemsSource="{Binding Children}">
+            <TextBlock Text="{Binding Name}" 
+                       FontSize="13"
+                       Padding="4,2"/>
+        </HierarchicalDataTemplate>
         
     </Window.Resources>
     
@@ -56,96 +70,181 @@
             <ui:AppBarButton Icon="Globe" Label="Check for Updates" Command="{Binding CheckForUpdatesCommand}"/>
         </ui:CommandBar>
 
-        <!-- Downloads Card -->
-        <Border Grid.Row="1" Style="{StaticResource CardStyle}" Margin="16,8">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+        <!-- Main Content Grid with TreeView and Downloads -->
+        <Grid Grid.Row="1" Margin="16,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-                <!-- Card Header -->
-                <Border Grid.Row="0" 
-                        Background="{StaticResource AccentColorBrush}" 
-                        CornerRadius="6,6,0,0" 
-                        Margin="-16,-16,-16,0" 
-                        Padding="16,12">
-                    <TextBlock Text="Downloads" 
-                               FontSize="18" 
-                               FontWeight="SemiBold" 
-                               Foreground="White"/>
-                </Border>
+            <!-- Category TreeView Card -->
+            <Border Grid.Column="0">
+                <Border.Style>
+                    <Style TargetType="Border" BasedOn="{StaticResource CardStyle}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsCategoryPanelCollapsed}" Value="True">
+                                <Setter Property="Width" Value="48"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsCategoryPanelCollapsed}" Value="False">
+                                <Setter Property="Width" Value="200"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
-                <!-- Downloads DataGrid -->
-                <DataGrid Grid.Row="1" 
-                         ItemsSource="{Binding Downloads}"
-                         SelectedItem="{Binding SelectedDownload}"
-                         AutoGenerateColumns="False"
-                         CanUserAddRows="False"
-                         CanUserDeleteRows="False"
-                         IsReadOnly="True"
-                         GridLinesVisibility="Horizontal"
-                         HeadersVisibility="Column"
-                         SelectionMode="Single"
-                         AlternatingRowBackground="#F8F8F8"
-                         Margin="0,16,0,0">
-                    <DataGrid.InputBindings>
-                        <MouseBinding Gesture="LeftDoubleClick" Command="{Binding OnDownloadItemDoubleClickCommand}"/>
-                    </DataGrid.InputBindings>
-                    
-                    <DataGrid.ContextMenu>
-                        <ContextMenu>
-                            <!--<MenuItem Header="Add URL to Task..." Command="{Binding AddUrlToTaskCommand}"/>-->
-                            <Separator/>
-                            <MenuItem Header="{loc:Localize General.Resume}" Command="{Binding ResumeDownloadCommand}"/>
-                            <MenuItem Header="{loc:Localize General.Pause}" Command="{Binding PauseDownloadCommand}"/>
-                            <MenuItem Header="{loc:Localize General.Restart}" Command="{Binding RestartDownloadCommand}"/>
-                            <MenuItem Header="{loc:Localize General.Remove}" Command="{Binding RemoveDownloadCommand}"/>
-                            <Separator/>
-                            <MenuItem Header="{loc:Localize MainWindow.ShowDetails}" Command="{Binding ShowDownloadDetailsCommand}"/>
-                        </ContextMenu>
-                    </DataGrid.ContextMenu>
-                    
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="{loc:Localize General.FileName}" Binding="{Binding FileName}" Width="340"/>
-                        <DataGridTextColumn Header="{loc:Localize General.Status}" Binding="{Binding StatusText}" Width="100"/>
-                        <DataGridTemplateColumn Header="{loc:Localize General.Size}" Width="130">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Grid Margin="8,4">
-                                        <ProgressBar Value="{Binding PercentageComplete, Mode=OneWay}" 
-                                                 VerticalAlignment="Bottom"
-                                                 Maximum="100" Margin="0 -3"
-                                                     Visibility="{Binding Converter={StaticResource StatusToVisibilityConverter}}"/>
-                                        <TextBlock 
-                                                 HorizontalAlignment="Center" 
-                                                 FontSize="11"
-                                                 FontWeight="Medium"
-                                                 VerticalAlignment="Center"
-                                                 Foreground="{StaticResource SystemControlForegroundBaseHighBrush}">
-                                            
-                                            <Run Text="{Binding SizeText, Mode=OneWay}" />
-                                            <LineBreak/>
-                                            <Run Text="{Binding PercentageComplete, StringFormat={}{0:F1}%, Mode=OneWay,Converter={StaticResource StatusToVisibilityConverter}}"  />
-                                        </TextBlock>
-                                        <!--<TextBlock Text="{Binding PercentageComplete, StringFormat={}{0:F1}%, Mode=OneWay}" 
-                                                 HorizontalAlignment="Center" 
-                                                 FontSize="11"
-                                                 FontWeight="Medium"
-                                                 VerticalAlignment="Center"
-                                                 Foreground="{StaticResource SystemControlForegroundBaseHighBrush}"/>-->
-                                    </Grid>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                        <!--<DataGridTextColumn Header="Size" Binding="{Binding SizeText, Mode=OneWay}" Width="120"/>-->
-                        <DataGridTextColumn Header="{loc:Localize General.Speed}" Binding="{Binding SpeedText, Mode=OneWay}" Width="100"/>
-                        <!--<DataGridTextColumn Header="URL" Binding="{Binding Url, Mode=OneWay}" Width="*"/>-->
-                        <!--<DataGridTextColumn Header="Created" Binding="{Binding CreatedAt, StringFormat={}{0:yyyy-MM-dd HH:mm}, Mode=OneWay}" Width="130"/>-->
-                    </DataGrid.Columns>
-                </DataGrid>
-            </Grid>
-        </Border>
+                    <!-- Card Header -->
+                    <Border Grid.Row="0" 
+                            Background="{StaticResource AccentColorBrush}" 
+                            CornerRadius="6,6,0,0" 
+                            Margin="-16,-16,-16,0" 
+                            Padding="8,12">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock Grid.Column="0"
+                                       Text="Categories" 
+                                       FontSize="16" 
+                                       FontWeight="SemiBold" 
+                                       Foreground="White"
+                                       Visibility="{Binding IsCategoryPanelCollapsed, Converter={StaticResource InverseBoolToVisibilityConverter}}"/>
+                            
+                            <Button Grid.Column="1"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Padding="4"
+                                    Cursor="Hand"
+                                    Click="ToggleCategoryPanel_Click"
+                                    ToolTip="{Binding IsCategoryPanelCollapsed, Converter={StaticResource CategoryPanelTooltipConverter}}">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="BorderThickness" Value="0"/>
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#33FFFFFF"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                                <Path Data="{Binding IsCategoryPanelCollapsed, Converter={StaticResource CategoryPanelIconConverter}}"
+                                      Fill="White"
+                                      Stretch="Uniform"
+                                      Width="12"
+                                      Height="12"/>
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <!-- TreeView -->
+                    <TreeView Grid.Row="1" 
+                              ItemsSource="{Binding CategoryTree}"
+                              ItemTemplate="{StaticResource CategoryTreeTemplate}"
+                              Style="{StaticResource CategoryTreeViewStyle}"
+                              Margin="0,16,0,0"
+                              Visibility="{Binding IsCategoryPanelCollapsed, Converter={StaticResource InverseBoolToVisibilityConverter}}">
+                        <TreeView.ItemContainerStyle>
+                            <Style TargetType="TreeViewItem">
+                                <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+                                <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
+                                <EventSetter Event="Selected" Handler="TreeViewItem_Selected"/>
+                            </Style>
+                        </TreeView.ItemContainerStyle>
+                    </TreeView>
+                </Grid>
+            </Border>
+
+            <!-- Downloads Card -->
+            <Border Grid.Column="2" Style="{StaticResource CardStyle}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Card Header -->
+                    <Border Grid.Row="0" 
+                            Background="{StaticResource AccentColorBrush}" 
+                            CornerRadius="6,6,0,0" 
+                            Margin="-16,-16,-16,0" 
+                            Padding="16,12">
+                        <TextBlock Text="Downloads" 
+                                   FontSize="18" 
+                                   FontWeight="SemiBold" 
+                                   Foreground="White"/>
+                    </Border>
+
+                    <!-- Downloads DataGrid -->
+                    <DataGrid Grid.Row="1" 
+                             ItemsSource="{Binding DownloadsView}"
+                             SelectedItem="{Binding SelectedDownload}"
+                             AutoGenerateColumns="False"
+                             CanUserAddRows="False"
+                             CanUserDeleteRows="False"
+                             IsReadOnly="True"
+                             GridLinesVisibility="Horizontal"
+                             HeadersVisibility="Column"
+                             SelectionMode="Single"
+                             AlternatingRowBackground="#F8F8F8"
+                             Margin="0,16,0,0">
+                        <DataGrid.InputBindings>
+                            <MouseBinding Gesture="LeftDoubleClick" Command="{Binding OnDownloadItemDoubleClickCommand}"/>
+                        </DataGrid.InputBindings>
+                        
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <!--<MenuItem Header="Add URL to Task..." Command="{Binding AddUrlToTaskCommand}"/>-->
+                                <Separator/>
+                                <MenuItem Header="{loc:Localize General.Resume}" Command="{Binding ResumeDownloadCommand}"/>
+                                <MenuItem Header="{loc:Localize General.Pause}" Command="{Binding PauseDownloadCommand}"/>
+                                <MenuItem Header="{loc:Localize General.Restart}" Command="{Binding RestartDownloadCommand}"/>
+                                <MenuItem Header="{loc:Localize General.Remove}" Command="{Binding RemoveDownloadCommand}"/>
+                                <Separator/>
+                                <MenuItem Header="{loc:Localize MainWindow.ShowDetails}" Command="{Binding ShowDownloadDetailsCommand}"/>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                        
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="{loc:Localize General.FileName}" Binding="{Binding FileName}" Width="300"/>
+                            <DataGridTextColumn Header="{loc:Localize General.Status}" Binding="{Binding StatusText}" Width="100"/>
+                            <DataGridTemplateColumn Header="{loc:Localize General.Size}" Width="130">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="8,4">
+                                            <ProgressBar Value="{Binding PercentageComplete, Mode=OneWay}" 
+                                                     VerticalAlignment="Bottom"
+                                                     Maximum="100" Margin="0 -3"
+                                                         Visibility="{Binding Converter={StaticResource StatusToVisibilityConverter}}"/>
+                                            <TextBlock 
+                                                     HorizontalAlignment="Center" 
+                                                     FontSize="11"
+                                                     FontWeight="Medium"
+                                                     VerticalAlignment="Center"
+                                                     Foreground="{StaticResource SystemControlForegroundBaseHighBrush}">
+                                                
+                                                <Run Text="{Binding SizeText, Mode=OneWay}" />
+                                                <LineBreak/>
+                                                <Run Text="{Binding PercentageComplete, StringFormat={}{0:F1}%, Mode=OneWay,Converter={StaticResource StatusToVisibilityConverter}}"  />
+                                            </TextBlock>
+                                        </Grid>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="{loc:Localize General.Speed}" Binding="{Binding SpeedText, Mode=OneWay}" Width="100"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Border>
+        </Grid>
 
         <!-- Modern Status Bar -->
         <Border Grid.Row="2" 

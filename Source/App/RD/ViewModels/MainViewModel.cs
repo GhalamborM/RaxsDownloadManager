@@ -2,13 +2,17 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RD.Core.Interfaces;
 using RD.Core.Models;
+using RD.Core.Helpers;
 using System.Collections.ObjectModel;
 using RD.Services;
 using RD.Views;
+using RD.Models;
 using Microsoft.Extensions.DependencyInjection;
 using MessageBox = System.Windows.MessageBox;
 using Application = System.Windows.Application;
 using Scheduler.Interfaces;
+using System.ComponentModel;
+using System.Windows.Data;
 
 namespace RD.ViewModels;
 
@@ -23,10 +27,33 @@ public partial class MainViewModel : ObservableObject
     private ObservableCollection<DownloadItem> _downloads = [];
 
     [ObservableProperty]
+    private ObservableCollection<CategoryTreeNode> _categoryTree = [];
+
+    [ObservableProperty]
+    private CategoryTreeNode? _selectedCategoryNode;
+
+    [ObservableProperty]
     private DownloadItem? _selectedDownload;
 
     [ObservableProperty]
     private bool _isLoading;
+
+    [ObservableProperty]
+    private bool _isCategoryPanelCollapsed = false;
+
+    private ICollectionView? _downloadsView;
+    public ICollectionView DownloadsView
+    {
+        get
+        {
+            if (_downloadsView == null)
+            {
+                _downloadsView = CollectionViewSource.GetDefaultView(Downloads);
+                _downloadsView.Filter = FilterDownloads;
+            }
+            return _downloadsView;
+        }
+    }
 
     public int ActiveDownloadsCount => Downloads.Count(d => d.Status == DownloadStatus.Downloading);
 
@@ -45,6 +72,133 @@ public partial class MainViewModel : ObservableObject
         _saveTimer = new System.Threading.Timer(async _ => await SaveDownloadsAsync(), null, TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(30));
 
         _ = LoadDownloadsAsync();
+        _ = InitializeCategoryTreeAsync();
+    }
+
+    private async Task InitializeCategoryTreeAsync()
+    {
+        try
+        {
+            var options = await _dataPersistenceService.LoadOptionsAsync();
+            BuildCategoryTree(options.FileCategories);
+        }
+        catch
+        {
+            BuildCategoryTree(FileCategoryDefaults.GetDefaultCategories());
+        }
+    }
+
+    private void BuildCategoryTree(List<FileCategory> categories)
+    {
+        CategoryTree.Clear();
+
+        var allNode = new CategoryTreeNode
+        {
+            Name = "All Downloads",
+            FilterType = CategoryFilterType.All,
+            IsExpanded = true
+        };
+        CategoryTree.Add(allNode);
+
+
+        foreach (var category in categories.Where(c => c.IsEnabled))
+        {
+            allNode.Children.Add(new CategoryTreeNode
+            {
+                Name = category.Name,
+                CategoryName = category.Name,
+                FilterType = CategoryFilterType.Category
+            });
+        }
+        var unfinishedNode = new CategoryTreeNode
+        {
+            Name = "Unfinished",
+            FilterType = CategoryFilterType.Unfinished,
+            IsExpanded = false
+        };
+        
+        foreach (var category in categories.Where(c => c.IsEnabled))
+        {
+            unfinishedNode.Children.Add(new CategoryTreeNode
+            {
+                Name = category.Name,
+                CategoryName = category.Name,
+                FilterType = CategoryFilterType.Category
+            });
+        }
+        CategoryTree.Add(unfinishedNode);
+
+        var finishedNode = new CategoryTreeNode
+        {
+            Name = "Finished",
+            FilterType = CategoryFilterType.Finished,
+            IsExpanded = false
+        };
+        
+        foreach (var category in categories.Where(c => c.IsEnabled))
+        {
+            finishedNode.Children.Add(new CategoryTreeNode
+            {
+                Name = category.Name,
+                CategoryName = category.Name,
+                FilterType = CategoryFilterType.Category
+            });
+        }
+        CategoryTree.Add(finishedNode);
+
+        if (CategoryTree.Count > 0)
+        {
+            SelectedCategoryNode = CategoryTree[0];
+            CategoryTree[0].IsSelected = true;
+        }
+    }
+
+    partial void OnSelectedCategoryNodeChanged(CategoryTreeNode? value)
+    {
+        if (value != null && _downloadsView != null)
+        {
+            _downloadsView.Refresh();
+        }
+    }
+
+    private bool FilterDownloads(object obj)
+    {
+        if (obj is not DownloadItem download || SelectedCategoryNode == null)
+            return true;
+
+        var isFinished = download.Status == DownloadStatus.Completed;
+        var parentFilter = GetParentFilterType();
+
+        if (parentFilter == CategoryFilterType.Finished && !isFinished)
+            return false;
+        
+        if (parentFilter == CategoryFilterType.Unfinished && isFinished)
+            return false;
+
+        if (string.IsNullOrEmpty(SelectedCategoryNode.CategoryName))
+            return true;
+
+        var downloadCategory = FileCategoryHelper.GetCategoryForFile(download.FileName, 
+            FileCategoryDefaults.GetDefaultCategories());
+        
+        return downloadCategory?.Name == SelectedCategoryNode.CategoryName;
+    }
+
+    private CategoryFilterType GetParentFilterType()
+    {
+        if (SelectedCategoryNode == null)
+            return CategoryFilterType.All;
+
+        if (string.IsNullOrEmpty(SelectedCategoryNode.CategoryName))
+            return SelectedCategoryNode.FilterType;
+
+        foreach (var parent in CategoryTree)
+        {
+            if (parent.Children.Contains(SelectedCategoryNode))
+                return parent.FilterType;
+        }
+
+        return CategoryFilterType.All;
     }
 
     [RelayCommand]
@@ -69,6 +223,9 @@ public partial class MainViewModel : ObservableObject
         var optionsWindow = App.ServiceProvider.GetRequiredService<OptionsWindow>();
         var viewModel = App.ServiceProvider.GetRequiredService<OptionsViewModel>();
         optionsWindow.DataContext = viewModel;
+        
+        optionsWindow.Closed += async (s, e) => await InitializeCategoryTreeAsync();
+        
         optionsWindow.ShowDialog();
     }
 
@@ -248,6 +405,7 @@ public partial class MainViewModel : ObservableObject
                 downloadItem.UpdateFromProgress(progress);
                 await SaveDownloadsAsync();
                 OnPropertyChanged(nameof(ActiveDownloadsCount));
+                _downloadsView?.Refresh();
             }
         });
     }
