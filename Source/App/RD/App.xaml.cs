@@ -85,6 +85,7 @@ public partial class App : System.Windows.Application
         services.AddTransient<SchedulerViewModel>();
         services.AddTransient<TaskSelectionViewModel>();
         services.AddTransient<UpdateViewModel>();
+        services.AddTransient<EditCategoryViewModel>();
 
         // Register Views
         services.AddTransient<MainWindow>();
@@ -94,6 +95,7 @@ public partial class App : System.Windows.Application
         services.AddTransient<SchedulerWindow>();
         services.AddTransient<TaskSelectionWindow>();
         services.AddTransient<UpdateWindow>();
+        services.AddTransient<EditCategoryWindow>();
     }
 
     protected override async void OnExit(ExitEventArgs e)

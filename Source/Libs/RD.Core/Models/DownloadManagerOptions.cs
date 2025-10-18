@@ -13,4 +13,7 @@ public class DownloadManagerOptions
     public TimeSpan ProgressReportInterval { get; set; } = TimeSpan.FromMilliseconds(500);
     public bool CleanupTempFilesOnSuccess { get; set; } = true;
     public bool CleanupTempFilesOnFailure { get; set; } = false;
+    
+    public bool UseCategorization { get; set; } = true;
+    public List<FileCategory> FileCategories { get; set; } = FileCategoryDefaults.GetDefaultCategories();
 }

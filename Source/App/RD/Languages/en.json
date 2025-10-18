@@ -71,7 +71,9 @@
     "Authentication": "Authentication",
     "UseAuthentication": "Use Authentication",
     "Type": "Type:",
-    "TokenApiKey": "Token/API Key:"
+    "TokenApiKey": "Token/API Key:",
+    "Category": "Category:",
+    "DetectedCategory": "Detected category:"
   },
   "DownloadDetailsWindow": {
     "DownloadInformation": "Download Information",
@@ -92,7 +94,27 @@
     "ResetToDefaults": "Reset to Defaults",
     "DefaultDownloadSettings": "Default Download Settings",
     "SelectTemporaryDirectory": "Select Temporary Directory",
-    "SelectDefaultDownloadDirectory": "Select Default Download Directory"
+    "SelectDefaultDownloadDirectory": "Select Default Download Directory",
+    "FileCategories": "File Categories",
+    "UseCategorization": "Use File Categorization",
+    "CategoryName": "Category Name",
+    "CategoryFolder": "Folder Name",
+    "CategoryExtensions": "Extensions",
+    "CategoryEnabled": "Enabled",
+    "ResetCategoriesToDefaults": "Reset Categories to Defaults",
+    "CategoryDescription": "When enabled, files will be automatically saved to subfolders based on their file extensions.",
+    "CreateCategory": "Create category",
+    "EditCategory": "Edit category",
+    "DeleteCategory": "Delete category"
+  },
+  "FileCategories": {
+    "General": "General",
+    "Compressed": "Compressed",
+    "Document": "Documents",
+    "Video": "Videos",
+    "Subtitle": "Subtitles",
+    "Music": "Music",
+    "Program": "Programs"
   },
   "MessageBox": {
     "OK": "OK",

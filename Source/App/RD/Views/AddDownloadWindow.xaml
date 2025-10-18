@@ -5,13 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:loc="clr-namespace:RD.Localization"
         xmlns:ui="http://schemas.modernwpf.com/2019"
+        xmlns:converters="clr-namespace:RD.Converters"
         mc:Ignorable="d"
         Title="{loc:Localize AddDownloadWindow.AddNewDownload}"
         Height="480" Width="600"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         ui:WindowHelper.UseModernWindowStyle="True">
-    
+
     <Window.Resources>
         <!-- Mica-like background -->
         <LinearGradientBrush x:Key="MicaBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
@@ -19,6 +20,10 @@
             <GradientStop Color="#F0F0F0" Offset="0.5"/>
             <GradientStop Color="#EEEEEE" Offset="1"/>
         </LinearGradientBrush>
+
+        <!-- Converters -->
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <!--<converters:EmptyStringToCollapsedConverter x:Key="EmptyStringToCollapsedConverter"/>-->
     </Window.Resources>
 
     <Grid  Background="{StaticResource MicaBackgroundBrush}">
@@ -40,6 +45,8 @@
 
                         <Grid>
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
@@ -143,15 +150,8 @@
                                 <TextBox Text="{Binding RetryDelaySeconds}" Style="{StaticResource FluentTextBoxStyle}"/>
                             </StackPanel>
 
-                            <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" 
-                                   Orientation="Horizontal" 
-                                   Margin="0,8,0,0">
-                                <CheckBox Content="OverwriteExistingFile" 
-                                      IsChecked="{Binding OverwriteExisting}" 
-                                      Margin="0,0,24,0"/>
-                                <!--<CheckBox Content="Enable resume" 
-                                      IsChecked="{Binding EnableResume}"/>-->
-                            </StackPanel>
+                            <CheckBox Grid.Row="3" Grid.Column="0" Content="{loc:Localize AddDownloadWindow.OverwriteExistingFile}" 
+                                      IsChecked="{Binding OverwriteExisting}"/>
                         </Grid>
                     </StackPanel>
                 </Border>
@@ -254,15 +254,24 @@
         <Border Grid.Row="1" Style="{StaticResource CardStyle}"
                 Padding="10">
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="{loc:Localize MainWindow.AddDownload}" 
+            <Grid>
+                <ComboBox ItemsSource="{Binding AvailableCategories}"
+                         SelectedItem="{Binding SelectedCategory}"
+                         DisplayMemberPath="Name"
+                         Height="36" Width="120"
+                         VerticalAlignment="Center"
+                         Margin="4">
+                </ComboBox>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="{loc:Localize MainWindow.AddDownload}" 
                     Command="{Binding AddDownloadCommand}" 
                     Style="{StaticResource FluentButtonStyle}"/>
-                <Button Content="{loc:Localize General.Cancel}" 
+                    <Button Content="{loc:Localize General.Cancel}" 
                     Command="{Binding CancelCommand}" 
                     Click="CancelButton_Click" 
                     Style="{StaticResource FluentSecondaryButtonStyle}"/>
-            </StackPanel>
+                </StackPanel>
+            </Grid>
         </Border>
     </Grid>
 </Window>

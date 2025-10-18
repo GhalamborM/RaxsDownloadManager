@@ -5,11 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:loc="clr-namespace:RD.Localization"
         xmlns:ui="http://schemas.modernwpf.com/2019" 
+        xmlns:converters="clr-namespace:RD.Converters"
         xmlns:viewmodels="clr-namespace:RD.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:OptionsViewModel}"
         mc:Ignorable="d"
-        Title="{loc:Localize OptionsWindow.Options}" Height="510" Width="550"
+        Title="{loc:Localize OptionsWindow.Options}" Height="700" Width="750"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="NoResize"
+        ResizeMode="CanResize"
         ui:WindowHelper.UseModernWindowStyle="True">
     
     <Window.Resources>
@@ -19,6 +20,9 @@
             <GradientStop Color="#F0F0F0" Offset="0.5"/>
             <GradientStop Color="#EEEEEE" Offset="1"/>
         </LinearGradientBrush>
+        
+        <!-- Converters -->
+        <converters:ExtensionsToStringConverter x:Key="ExtensionsToStringConverter"/>
     </Window.Resources>
 
     <Grid  Background="{StaticResource MicaBackgroundBrush}">
@@ -78,6 +82,75 @@
                                 Command="{Binding BrowseTempDirectoryCommand}"
                                 VerticalAlignment="Bottom"/>
                         </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- File Categories -->
+                <Border Style="{StaticResource CardStyle}" Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="{loc:Localize OptionsWindow.FileCategories}" 
+                               FontSize="18" 
+                               FontWeight="SemiBold" 
+                               Margin="0,0,0,8"
+                               Foreground="{StaticResource AccentColorBrush}"/>
+                        
+                        <CheckBox Content="{loc:Localize OptionsWindow.UseCategorization}" 
+                                  IsChecked="{Binding UseCategorization}" 
+                                  Margin="0,0,0,8"
+                                  FontWeight="SemiBold"/>
+                        
+                        <TextBlock Text="{loc:Localize OptionsWindow.CategoryDescription}" 
+                                   TextWrapping="Wrap"
+                                   Foreground="Gray"
+                                   Margin="0,0,0,12"/>
+                        
+                        <DataGrid ItemsSource="{Binding FileCategories}"
+                                  SelectedItem="{Binding SelectedCategory}"
+                                  AutoGenerateColumns="False"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"
+                                  HeadersVisibility="Column"
+                                  GridLinesVisibility="Horizontal"
+                                  Height="200"
+                                  Margin="0,0,0,12">
+                            <DataGrid.Columns>
+                                <DataGridCheckBoxColumn Header="{loc:Localize OptionsWindow.CategoryEnabled}" 
+                                                        Binding="{Binding IsEnabled}" 
+                                                        Width="80"/>
+                                <DataGridTextColumn Header="{loc:Localize OptionsWindow.CategoryName}" 
+                                                    Binding="{Binding Name}" 
+                                                    Width="120"
+                                                    IsReadOnly="True"/>
+                                <DataGridTextColumn Header="{loc:Localize OptionsWindow.CategoryFolder}" 
+                                                    Binding="{Binding FolderName}" 
+                                                    Width="150"/>
+                                <DataGridTextColumn Header="{loc:Localize OptionsWindow.CategoryExtensions}" 
+                                                    Binding="{Binding Extensions, Converter={StaticResource ExtensionsToStringConverter}}" 
+                                                    Width="*"
+                                                    IsReadOnly="True"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                            <Button Content="{loc:Localize OptionsWindow.CreateCategory}" 
+                                    Command="{Binding CreateCategoryCommand}" 
+                                    Style="{StaticResource FluentButtonStyle}"
+                                    Margin="0,0,8,0"/>
+                            <Button Content="{loc:Localize OptionsWindow.EditCategory}" 
+                                    Command="{Binding EditCategoryCommand}" 
+                                    Style="{StaticResource FluentSecondaryButtonStyle}"
+                                    Margin="0,0,8,0"/>
+                            <Button Content="{loc:Localize OptionsWindow.DeleteCategory}" 
+                                    Command="{Binding DeleteCategoryCommand}" 
+                                    Style="{StaticResource FluentSecondaryButtonStyle}"
+                                    Margin="0,0,8,0"/>
+                        </StackPanel>
+                        
+                        <Button Content="{loc:Localize OptionsWindow.ResetCategoriesToDefaults}" 
+                                Command="{Binding ResetCategoriesToDefaultsCommand}" 
+                                Style="{StaticResource FluentSecondaryButtonStyle}"
+                                HorizontalAlignment="Left"
+                                Margin="0,0,0,0"/>
                     </StackPanel>
                 </Border>
 

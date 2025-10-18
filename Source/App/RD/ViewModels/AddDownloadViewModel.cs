@@ -6,12 +6,14 @@ using RD.Core.Helpers;
 using RD.Core.Models;
 using RD.Localization;
 using RD.Services;
+using System.Collections.ObjectModel;
 
 namespace RD.ViewModels;
 #pragma warning disable
 public partial class AddDownloadViewModel : ObservableObject
 {
     private readonly IDataPersistenceService _dataPersistenceService;
+    private DownloadManagerOptions? _loadedOptions;
 
     [ObservableProperty]
     private string _url = string.Empty;
@@ -79,6 +81,18 @@ public partial class AddDownloadViewModel : ObservableObject
     [ObservableProperty]
     private string _authHeaderName = "Authorization";
 
+    [ObservableProperty]
+    private bool _useCategorization;
+
+    [ObservableProperty]
+    private ObservableCollection<FileCategory> _availableCategories = new();
+
+    [ObservableProperty]
+    private FileCategory? _selectedCategory;
+
+    [ObservableProperty]
+    private string _detectedCategoryName = string.Empty;
+
     public event Action<string, DownloadOptions>? DownloadAdded;
 
     public static Array AuthenticationTypes => Enum.GetValues<AuthenticationType>();
@@ -95,12 +109,21 @@ public partial class AddDownloadViewModel : ObservableObject
     {
         try
         {
-            var options = await _dataPersistenceService.LoadOptionsAsync();
-            DownloadPath = options.DefaultDownloadDirectory;
+            _loadedOptions = await _dataPersistenceService.LoadOptionsAsync();
+            DownloadPath = _loadedOptions.DefaultDownloadDirectory;
+            UseCategorization = _loadedOptions.UseCategorization;
+            
+            AvailableCategories.Clear();
+            foreach (var category in _loadedOptions.FileCategories.Where(c => c.IsEnabled))
+            {
+                AvailableCategories.Add(category);
+            }
+            SelectedCategory = AvailableCategories.FirstOrDefault();
         }
         catch
         {
             DownloadPath = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
+            UseCategorization = false;
         }
         
         CopyFromClipboard();
@@ -137,7 +160,18 @@ public partial class AddDownloadViewModel : ObservableObject
 
         try
         {
-            var fullPath = System.IO.Path.Combine(DownloadPath, FileName);
+            string fullPath;
+            
+            // Use selected category if categorization is enabled and a category is selected
+            if (UseCategorization && SelectedCategory != null && !string.IsNullOrWhiteSpace(SelectedCategory.FolderName))
+            {
+                fullPath = System.IO.Path.Combine(DownloadPath, SelectedCategory.FolderName, FileName);
+            }
+            else
+            {
+                fullPath = System.IO.Path.Combine(DownloadPath, FileName);
+            }
+            
             var options = CreateDownloadOptions(fullPath);
             DownloadAdded?.Invoke(Url, options);
         }
@@ -222,6 +256,34 @@ public partial class AddDownloadViewModel : ObservableObject
             catch
             {
             }
+        }
+    }
+
+    partial void OnFileNameChanged(string value)
+    {
+        if (!string.IsNullOrWhiteSpace(value) && UseCategorization && _loadedOptions != null)
+        {
+            var detectedCategory = FileCategoryHelper.GetCategoryForFile(value, _loadedOptions.FileCategories);
+            
+            if (detectedCategory != null)
+            {
+                DetectedCategoryName = detectedCategory.Name;
+                
+                SelectedCategory = AvailableCategories.FirstOrDefault(c => c.Name == detectedCategory.Name);
+            }
+            else
+            {
+                DetectedCategoryName = string.Empty;
+                SelectedCategory = AvailableCategories.FirstOrDefault(c => c.Name == FileCategoryDefaults.General);
+            }
+        }
+    }
+
+    partial void OnSelectedCategoryChanged(FileCategory? value)
+    {
+        if (value != null)
+        {
+            DetectedCategoryName = value.Name;
         }
     }
 }
