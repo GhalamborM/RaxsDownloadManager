@@ -1,13 +1,11 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Win32;
 using RD.Controls;
+using RD.Core.Helpers;
 using RD.Core.Models;
 using RD.Localization;
 using RD.Services;
-using RD.Views;
-using System.Diagnostics;
-using System.Windows;
-using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
 
 namespace RD.ViewModels;
 #pragma warning disable
@@ -85,20 +83,22 @@ public partial class AddDownloadViewModel : ObservableObject
 
     private readonly ILocalizationService localizationService = LocalizationService.Instance;
 
+    public AddDownloadViewModel()
+    {
+        CopyFromClipboard();
+    }
+
     [RelayCommand]
     private void BrowseDownloadPath()
     {
-        var dialog = new SaveFileDialog
+        var dialog = new OpenFolderDialog
         {
-            Title = localizationService.GetString(MessageUtils.SelectDownloadLocation),
-            FileName = FileName,
-            CheckPathExists = true
+            Title = localizationService.GetString(MessageUtils.SelectDownloadLocation)
         };
 
         if (dialog.ShowDialog() == true)
         {
-            DownloadPath = System.IO.Path.GetDirectoryName(dialog.FileName) ?? DownloadPath;
-            FileName = System.IO.Path.GetFileName(dialog.FileName);
+            DownloadPath = System.IO.Path.GetDirectoryName(dialog.FolderName) ?? DownloadPath;
         }
     }
 
@@ -175,6 +175,17 @@ public partial class AddDownloadViewModel : ObservableObject
         }
 
         return options;
+    }
+
+    private void CopyFromClipboard()
+    {
+        var clipboard = System.Windows.Clipboard.GetText();
+        if (Helper.IsValidUrl(clipboard))
+        {
+            var url = Helper.ExtractUrls(clipboard).FirstOrDefault();
+            Url = url;
+            OnUrlChanged(url);
+        }
     }
 
     partial void OnUrlChanged(string value)

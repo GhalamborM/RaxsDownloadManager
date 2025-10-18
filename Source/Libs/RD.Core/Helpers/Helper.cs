@@ -1,4 +1,5 @@
 ﻿using RD.Core.Models;
+using System.Text.RegularExpressions;
 
 namespace RD.Core.Helpers;
 
@@ -27,4 +28,24 @@ public static class Helper
         DownloadStatus.Cancelled => "Cancelled",
         _ => "Unknown"
     };
+
+    public static bool IsValidUrl(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            return false;
+
+        return Uri.TryCreate(text, UriKind.Absolute, out var uri) 
+            && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
+    }
+
+    public static IEnumerable<string> ExtractUrls(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            return [];
+
+        var urlPattern = @"https?://[^\s<>""\[\]{}|\\^`]+";
+        var matches = Regex.Matches(text, urlPattern, RegexOptions.IgnoreCase);
+        
+        return matches.Select(m => m.Value).Where(IsValidUrl);
+    }
 }
