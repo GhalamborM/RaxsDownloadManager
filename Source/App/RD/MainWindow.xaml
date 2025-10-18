@@ -161,7 +161,7 @@
                     
                     <TextBlock Text="🚀 " FontSize="16" Margin="0,0,8,0"/>
                     <TextBlock Text="{loc:Localize MainWindow.Active}" FontWeight="Medium"/>
-                    <TextBlock Text="{Binding Downloads.Count, Mode=OneWay}" FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding ActiveDownloadsCount, Mode=OneWay}" FontWeight="SemiBold"/>
                 </StackPanel>
                 
                 <StackPanel Orientation="Horizontal" 

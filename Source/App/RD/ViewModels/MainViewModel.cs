@@ -28,6 +28,8 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty]
     private bool _isLoading;
 
+    public int ActiveDownloadsCount => Downloads.Count(d => d.Status == DownloadStatus.Downloading);
+
     public MainViewModel(IDownloadManager downloadManager, IDataPersistenceService dataPersistenceService, ITaskScheduler taskScheduler)
     {
         _downloadManager = downloadManager;
@@ -131,6 +133,7 @@ public partial class MainViewModel : ObservableObject
         {
             await _downloadManager.CancelDownloadAsync(SelectedDownload.DownloadId);
             Downloads.Remove(SelectedDownload);
+            OnPropertyChanged(nameof(ActiveDownloadsCount));
             await SaveDownloadsAsync();
         }
     }
@@ -212,6 +215,7 @@ public partial class MainViewModel : ObservableObject
             downloadItem.UpdateFromOptions(options);
 
             Downloads.Add(downloadItem);
+            OnPropertyChanged(nameof(ActiveDownloadsCount));
 
             var downloadId = await _downloadManager.StartDownloadAsync(options);
             downloadItem.DownloadId = downloadId;
@@ -230,6 +234,7 @@ public partial class MainViewModel : ObservableObject
         {
             var downloadItem = Downloads.FirstOrDefault(d => d.DownloadId == progress.DownloadId);
             downloadItem?.UpdateFromProgress(progress);
+            OnPropertyChanged(nameof(ActiveDownloadsCount));
         });
     }
 
@@ -242,6 +247,7 @@ public partial class MainViewModel : ObservableObject
             {
                 downloadItem.UpdateFromProgress(progress);
                 await SaveDownloadsAsync();
+                OnPropertyChanged(nameof(ActiveDownloadsCount));
             }
         });
     }
@@ -255,6 +261,7 @@ public partial class MainViewModel : ObservableObject
             {
                 downloadItem.UpdateFromProgress(progress);
                 await SaveDownloadsAsync();
+                OnPropertyChanged(nameof(ActiveDownloadsCount));
             }
         });
     }
