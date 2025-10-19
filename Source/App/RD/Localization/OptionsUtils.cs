@@ -20,4 +20,6 @@ public static class OptionsUtils
     public const string ResetCategoriesToDefaults = "OptionsWindow.ResetCategoriesToDefaults";
     public const string CategoryDescription = "OptionsWindow.CategoryDescription";
     public const string RunAtStartup = "OptionsWindow.RunAtStartup";
+    public const string MonitorClipboardForUrls = "OptionsWindow.MonitorClipboardForUrls";
+    public const string ClipboardMonitoringDescription = "OptionsWindow.ClipboardMonitoringDescription";
 }

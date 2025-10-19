@@ -18,4 +18,5 @@ public class DownloadManagerOptions
     public List<FileCategory> FileCategories { get; set; } = FileCategoryDefaults.GetDefaultCategories();
     
     public bool RunAtStartup { get; set; } = true;
+    public bool MonitorClipboardForUrls { get; set; } = true;
 }

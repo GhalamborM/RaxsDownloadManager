@@ -19,7 +19,7 @@
         <converters:StatusToVisibilityConverter x:Key="StatusToVisibilityConverter"/>
         <converters:CategoryPanelIconConverter x:Key="CategoryPanelIconConverter"/>
         <converters:CategoryPanelTooltipConverter x:Key="CategoryPanelTooltipConverter"/>
-        
+        <converters:StatusToEmptyConverter x:Key="StatusToEmptyConverter"/>
         <!-- Mica-like background -->
         <LinearGradientBrush x:Key="MicaBackgroundBrush" StartPoint="0,0" EndPoint="0,1">
             <GradientStop Color="#F3F3F3" Offset="0"/>

@@ -59,6 +59,9 @@ public partial class OptionsViewModel : ObservableObject
     private bool _runAtStartup;
 
     [ObservableProperty]
+    private bool _monitorClipboardForUrls;
+
+    [ObservableProperty]
     private ObservableCollection<FileCategory> _fileCategories = new();
 
     [ObservableProperty]
@@ -123,7 +126,8 @@ public partial class OptionsViewModel : ObservableObject
                 CleanupTempFilesOnFailure = CleanupTempFilesOnFailure,
                 UseCategorization = UseCategorization,
                 FileCategories = FileCategories.ToList(),
-                RunAtStartup = RunAtStartup
+                RunAtStartup = RunAtStartup,
+                MonitorClipboardForUrls = MonitorClipboardForUrls
             };
 
             // Validate categories before saving
@@ -305,6 +309,7 @@ public partial class OptionsViewModel : ObservableObject
         CleanupTempFilesOnFailure = options.CleanupTempFilesOnFailure;
         UseCategorization = options.UseCategorization;
         RunAtStartup = options.RunAtStartup;
+        MonitorClipboardForUrls = options.MonitorClipboardForUrls;
 
         FileCategories.Clear();
         foreach (var category in options.FileCategories)

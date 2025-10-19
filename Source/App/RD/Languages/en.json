@@ -106,7 +106,9 @@
     "CreateCategory": "Create category",
     "EditCategory": "Edit category",
     "DeleteCategory": "Delete category",
-    "RunAtStartup": "Run at Windows startup"
+    "RunAtStartup": "Run at Windows startup",
+    "MonitorClipboardForUrls": "Monitor clipboard for URLs",
+    "ClipboardMonitoringDescription": "When enabled, the application will automatically start downloading when a URL is copied to the clipboard"
   },
   "FileCategories": {
     "General": "General",

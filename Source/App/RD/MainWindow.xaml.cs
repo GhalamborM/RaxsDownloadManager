@@ -1,17 +1,21 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using RD.Controls;
 using RD.Core.Models;
+using RD.Core.Helpers;
 using RD.Models;
 using RD.Services;
 using RD.ViewModels;
+using RD.Views;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using System.Windows.Forms;
+using System.Windows.Interop;
+using System.Runtime.InteropServices;
 
 namespace RD;
-
+#pragma warning disable
 public partial class MainWindow : Window
 {
     private readonly IDataPersistenceService _dataPersistenceService;
@@ -19,6 +23,16 @@ public partial class MainWindow : Window
     private DispatcherTimer? _saveTimer;
     private NotifyIcon? _notifyIcon;
     private bool _isExiting = false;
+    private string? _lastClipboardContent;
+    private bool _isClipboardMonitoringEnabled = false;
+
+    [DllImport("user32.dll", SetLastError = true)]
+    private static extern IntPtr AddClipboardFormatListener(IntPtr hwnd);
+
+    [DllImport("user32.dll", SetLastError = true)]
+    private static extern bool RemoveClipboardFormatListener(IntPtr hwnd);
+
+    private const int WM_CLIPBOARDUPDATE = 0x031D;
 
     public MainWindow()
     {
@@ -75,11 +89,114 @@ public partial class MainWindow : Window
     {
         _isLoaded = true;
         await LoadUISettingsAsync();
+        await InitializeClipboardMonitoringAsync();
         
         if (DownloadsDataGrid != null)
         {
             DownloadsDataGrid.LayoutUpdated += DataGrid_LayoutUpdated;
         }
+    }
+
+    private async Task InitializeClipboardMonitoringAsync()
+    {
+        try
+        {
+            var options = await _dataPersistenceService.LoadOptionsAsync();
+            _isClipboardMonitoringEnabled = options.MonitorClipboardForUrls;
+
+            if (_isClipboardMonitoringEnabled)
+            {
+                _lastClipboardContent = GetClipboardText();
+
+                var windowHandle = new WindowInteropHelper(this).Handle;
+                var source = HwndSource.FromHwnd(windowHandle);
+                source?.AddHook(WndProc);
+                AddClipboardFormatListener(windowHandle);
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Failed to initialize clipboard monitoring: {ex.Message}");
+        }
+    }
+
+    private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+    {
+        if (msg == WM_CLIPBOARDUPDATE && _isClipboardMonitoringEnabled)
+        {
+            CheckClipboardForUrl();
+        }
+        return IntPtr.Zero;
+    }
+
+    private void CheckClipboardForUrl()
+    {
+        try
+        {
+            var clipboardText = GetClipboardText();
+
+            if (string.IsNullOrWhiteSpace(clipboardText) || clipboardText == _lastClipboardContent)
+                return;
+
+            _lastClipboardContent = clipboardText;
+
+            if (Helper.IsValidUrl(clipboardText))
+            {
+                Dispatcher.InvokeAsync(() =>
+                {
+                    ShowAddDownloadWindowWithUrl(clipboardText);
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Error checking clipboard: {ex.Message}");
+        }
+    }
+
+    private string? GetClipboardText()
+    {
+        try
+        {
+            if (System.Windows.Clipboard.ContainsText())
+            {
+                return System.Windows.Clipboard.GetText();
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Error getting clipboard text: {ex.Message}");
+        }
+        return null;
+    }
+
+    private void ShowAddDownloadWindowWithUrl(string url)
+    {
+        //if (!IsVisible || WindowState == WindowState.Minimized)
+        //{
+        //    Show();
+        //    WindowState = WindowState.Normal;
+        //    Activate();
+        //    _notifyIcon!.Visible = false;
+        //}
+
+        var addDownloadWindow = App.ServiceProvider.GetRequiredService<AddDownloadWindow>();
+        var viewModel = App.ServiceProvider.GetRequiredService<AddDownloadViewModel>();
+        addDownloadWindow.DataContext = viewModel;
+        
+        viewModel.Url = url;
+        
+        viewModel.DownloadAdded += async (downloadUrl, options) =>
+        {
+            if (DataContext is MainViewModel mainViewModel)
+            {
+                await mainViewModel.AddDownloadAsync(downloadUrl, options);
+            }
+            addDownloadWindow.Close();
+        };
+
+        addDownloadWindow.Owner = this;
+        addDownloadWindow.ShowDialog();
     }
 
     private void MainWindow_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -233,6 +350,14 @@ public partial class MainWindow : Window
         }
 
         _saveTimer?.Stop();
+        
+        try
+        {
+            var windowHandle = new WindowInteropHelper(this).Handle;
+            RemoveClipboardFormatListener(windowHandle);
+        }
+        catch { }
+        
         await SaveUISettingsAsync();
     }
 

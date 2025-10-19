@@ -47,6 +47,7 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -86,9 +87,20 @@
                             <CheckBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
                                       Content="{loc:Localize OptionsWindow.RunAtStartup}" 
                                       IsChecked="{Binding RunAtStartup}" 
-                                      Margin="0,8,0,0"
+                                      Margin="0,8,0,8"
+                                      FontWeight="SemiBold"/>
+                        
+                            <CheckBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
+                                      Content="{loc:Localize OptionsWindow.MonitorClipboardForUrls}" 
+                                      IsChecked="{Binding MonitorClipboardForUrls}" 
+                                      Margin="0,0,0,8"
                                       FontWeight="SemiBold"/>
                         </Grid>
+                        
+                        <TextBlock Text="{loc:Localize OptionsWindow.ClipboardMonitoringDescription}" 
+                                   TextWrapping="Wrap"
+                                   Foreground="Gray"
+                                   Margin="0,0,0,0"/>
                     </StackPanel>
                 </Border>
 
