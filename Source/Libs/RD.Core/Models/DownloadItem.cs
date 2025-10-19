@@ -12,6 +12,7 @@ public class DownloadItem : INotifyPropertyChanged
     private string _fileName = string.Empty;
     private string _url = string.Empty;
     private string _filePath = string.Empty;
+    private string? _referrerUrl;
     private long _totalBytes;
     private long _downloadedBytes;
     private DownloadStatus _status;
@@ -55,6 +56,12 @@ public class DownloadItem : INotifyPropertyChanged
     {
         get => _filePath;
         set => SetProperty(ref _filePath, value);
+    }
+
+    public string? ReferrerUrl
+    {
+        get => _referrerUrl;
+        set => SetProperty(ref _referrerUrl, value);
     }
 
     public long TotalBytes

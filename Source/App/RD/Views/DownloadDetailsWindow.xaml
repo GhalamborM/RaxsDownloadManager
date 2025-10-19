@@ -57,6 +57,7 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="140"/>
@@ -67,37 +68,260 @@
                                Text="{loc:Localize AddDownloadWindow.FileName}" 
                                FontWeight="SemiBold" 
                                VerticalAlignment="Center"/>
-                            <TextBlock Grid.Row="0" Grid.Column="1" 
-                              Text="{Binding FileName, Mode=OneWay}" 
-                              TextWrapping="Wrap" 
-                              VerticalAlignment="Center"
-                              Margin="8,0,0,8"/>
+                            <Grid Grid.Row="0" Grid.Column="1" Margin="8,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0"
+                                  Text="{Binding FileName, Mode=OneWay}" 
+                                  TextWrapping="Wrap" 
+                                  VerticalAlignment="Center"
+                                  Margin="0,0,8,0"/>
+                                <Button Grid.Column="1"
+                                    Content="&#xE8C8;"
+                                    FontFamily="Segoe MDL2 Assets"
+                                    FontSize="14"
+                                    ToolTip="Copy File Name"
+                                    Command="{Binding CopyFileNameCommand}"
+                                    VerticalAlignment="Center"
+                                    Padding="6"
+                                    MinWidth="28"
+                                    MinHeight="28"
+                                    Background="Transparent"
+                                    BorderBrush="#E0E0E0"
+                                    BorderThickness="1">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Setter Property="Cursor" Value="Hand"/>
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="{TemplateBinding Background}"
+                                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                                CornerRadius="4"
+                                                                Padding="{TemplateBinding Padding}">
+                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#F0F0F0"/>
+                                                </Trigger>
+                                                <Trigger Property="IsPressed" Value="True">
+                                                    <Setter Property="Background" Value="#E0E0E0"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </Grid>
 
                             <TextBlock Grid.Row="1" Grid.Column="0" 
                                Text="{loc:Localize AddDownloadWindow.Url}" 
                                FontWeight="SemiBold" 
                                VerticalAlignment="Center"/>
-                            <TextBlock Grid.Row="1" Grid.Column="1" 
-                              Text="{Binding Url, Mode=OneWay}" 
-                              TextWrapping="Wrap" 
-                              VerticalAlignment="Center"
-                              Margin="8,0,0,8"/>
+                            <Grid Grid.Row="1" Grid.Column="1" Margin="8,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0"
+                                  Text="{Binding Url, Mode=OneWay}" 
+                                  TextWrapping="Wrap" 
+                                  VerticalAlignment="Center"
+                                  Margin="0,0,8,0"/>
+                                <Button Grid.Column="1"
+                                    Content="&#xE8C8;"
+                                    FontFamily="Segoe MDL2 Assets"
+                                    FontSize="14"
+                                    ToolTip="Copy URL"
+                                    Command="{Binding CopyUrlCommand}"
+                                    VerticalAlignment="Center"
+                                    Padding="6"
+                                    MinWidth="28"
+                                    MinHeight="28"
+                                    Background="Transparent"
+                                    BorderBrush="#E0E0E0"
+                                    BorderThickness="1">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Setter Property="Cursor" Value="Hand"/>
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="{TemplateBinding Background}"
+                                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                                CornerRadius="4"
+                                                                Padding="{TemplateBinding Padding}">
+                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#F0F0F0"/>
+                                                </Trigger>
+                                                <Trigger Property="IsPressed" Value="True">
+                                                    <Setter Property="Background" Value="#E0E0E0"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </Grid>
 
                             <TextBlock Grid.Row="2" Grid.Column="0" 
                                Text="{loc:Localize General.SavePath}" 
                                FontWeight="SemiBold" 
                                VerticalAlignment="Center"/>
-                            <TextBlock Grid.Row="2" Grid.Column="1" 
-                              Text="{Binding FilePath, Mode=OneWay}" 
-                              TextWrapping="Wrap" 
-                              VerticalAlignment="Center"
-                              Margin="8,0,0,8"/>
+                            <Grid Grid.Row="2" Grid.Column="1" Margin="8,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0"
+                                  Text="{Binding FilePath, Mode=OneWay}" 
+                                  TextWrapping="Wrap" 
+                                  VerticalAlignment="Center"
+                                  Margin="0,0,8,0"/>
+                                <Button Grid.Column="1"
+                                    Content="&#xE8C8;"
+                                    FontFamily="Segoe MDL2 Assets"
+                                    FontSize="14"
+                                    ToolTip="Copy File Path"
+                                    Command="{Binding CopyFilePathCommand}"
+                                    VerticalAlignment="Center"
+                                    Padding="6"
+                                    MinWidth="28"
+                                    MinHeight="28"
+                                    Background="Transparent"
+                                    BorderBrush="#E0E0E0"
+                                    BorderThickness="1">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Setter Property="Cursor" Value="Hand"/>
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="{TemplateBinding Background}"
+                                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                                CornerRadius="4"
+                                                                Padding="{TemplateBinding Padding}">
+                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#F0F0F0"/>
+                                                </Trigger>
+                                                <Trigger Property="IsPressed" Value="True">
+                                                    <Setter Property="Background" Value="#E0E0E0"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </Grid>
 
                             <TextBlock Grid.Row="3" Grid.Column="0" 
+                               Text="Referrer URL" 
+                               FontWeight="SemiBold" 
+                               VerticalAlignment="Center"/>
+                            <Grid Grid.Row="3" Grid.Column="1" Margin="8,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0"
+                                  Text="{Binding ReferrerUrl, Mode=OneWay}" 
+                                  TextWrapping="Wrap" 
+                                  VerticalAlignment="Center"
+                                  Margin="0,0,8,0">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Opacity" Value="1"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ReferrerUrl}" Value="{x:Null}">
+                                                    <Setter Property="Text" Value="N/A"/>
+                                                    <Setter Property="Opacity" Value="0.5"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ReferrerUrl}" Value="">
+                                                    <Setter Property="Text" Value="N/A"/>
+                                                    <Setter Property="Opacity" Value="0.5"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                                <Button Grid.Column="1"
+                                    Content="&#xE8C8;"
+                                    FontFamily="Segoe MDL2 Assets"
+                                    FontSize="14"
+                                    ToolTip="Copy Referrer URL"
+                                    Command="{Binding CopyReferrerUrlCommand}"
+                                    VerticalAlignment="Center"
+                                    Padding="6"
+                                    MinWidth="28"
+                                    MinHeight="28"
+                                    Background="Transparent"
+                                    BorderBrush="#E0E0E0"
+                                    BorderThickness="1">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Setter Property="Cursor" Value="Hand"/>
+                                            <Setter Property="IsEnabled" Value="True"/>
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="{TemplateBinding Background}"
+                                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                                CornerRadius="4"
+                                                                Padding="{TemplateBinding Padding}">
+                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ReferrerUrl}" Value="{x:Null}">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                    <Setter Property="Opacity" Value="0.4"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ReferrerUrl}" Value="">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                    <Setter Property="Opacity" Value="0.4"/>
+                                                </DataTrigger>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#F0F0F0"/>
+                                                </Trigger>
+                                                <Trigger Property="IsPressed" Value="True">
+                                                    <Setter Property="Background" Value="#E0E0E0"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </Grid>
+
+                            <TextBlock Grid.Row="4" Grid.Column="0" 
                                Text="{loc:Localize General.Status}" 
                                FontWeight="SemiBold" 
                                VerticalAlignment="Center"/>
-                            <Border Grid.Row="3" Grid.Column="1" 
+                            <Border Grid.Row="4" Grid.Column="1" 
                            Background="{StaticResource AccentColorBrush}"
                            CornerRadius="12"
                            Padding="8,4"
@@ -109,11 +333,11 @@
                                   FontWeight="SemiBold"/>
                             </Border>
 
-                            <TextBlock Grid.Row="4" Grid.Column="0" 
+                            <TextBlock Grid.Row="5" Grid.Column="0" 
                                Text="{loc:Localize DownloadDetailsWindow.OverallProgress}" 
                                FontWeight="SemiBold" 
                                VerticalAlignment="Center"/>
-                            <StackPanel Grid.Row="4" Grid.Column="1" Margin="8,0,0,0">
+                            <StackPanel Grid.Row="5" Grid.Column="1" Margin="8,0,0,0">
                                 <ProgressBar Value="{Binding OverallProgress, Mode=OneWay}" 
                                     Maximum="100" 
                                     Margin="0,0,0,4"/>

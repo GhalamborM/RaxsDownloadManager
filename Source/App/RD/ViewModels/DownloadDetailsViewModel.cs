@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using RD.Core.Interfaces;
 using RD.Core.Models;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace RD.ViewModels;
 
@@ -20,6 +21,9 @@ public partial class DownloadDetailsViewModel(IDownloadManager downloadManager) 
 
     [ObservableProperty]
     private string _filePath = string.Empty;
+
+    [ObservableProperty]
+    private string? _referrerUrl;
 
     [ObservableProperty]
     private string _status = string.Empty;
@@ -92,6 +96,42 @@ public partial class DownloadDetailsViewModel(IDownloadManager downloadManager) 
         }
     }
 
+    [RelayCommand]
+    private void CopyFileName()
+    {
+        if (!string.IsNullOrEmpty(FileName))
+        {
+            System.Windows.Clipboard.SetText(FileName);
+        }
+    }
+
+    [RelayCommand]
+    private void CopyUrl()
+    {
+        if (!string.IsNullOrEmpty(Url))
+        {
+            System.Windows.Clipboard.SetText(Url);
+        }
+    }
+
+    [RelayCommand]
+    private void CopyFilePath()
+    {
+        if (!string.IsNullOrEmpty(FilePath))
+        {
+            System.Windows.Clipboard.SetText(FilePath);
+        }
+    }
+
+    [RelayCommand]
+    private void CopyReferrerUrl()
+    {
+        if (!string.IsNullOrEmpty(ReferrerUrl))
+        {
+            System.Windows.Clipboard.SetText(ReferrerUrl);
+        }
+    }
+
     private void StartPeriodicUpdates()
     {
         _updateTimer?.Dispose();
@@ -105,6 +145,7 @@ public partial class DownloadDetailsViewModel(IDownloadManager downloadManager) 
         FileName = _downloadItem.FileName;
         Url = _downloadItem.Url;
         FilePath = _downloadItem.FilePath;
+        ReferrerUrl = _downloadItem.ReferrerUrl;
         Status = _downloadItem.StatusText;
         OverallProgress = IsCompleted() ? 100 : _downloadItem.PercentageComplete;
         SizeText = _downloadItem.SizeText;
