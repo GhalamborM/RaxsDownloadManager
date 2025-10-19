@@ -43,6 +43,7 @@ public partial class UpdateViewModel : ObservableObject
         _updateService = updateService;
         var version = _updateService.GetCurrentVersion();
         _currentVersion = $"v{version.Major}.{version.Minor}.{version.Build}";
+        _ = CheckForUpdatesAsync();
     }
 
     [RelayCommand]
