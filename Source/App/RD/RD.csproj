@@ -18,7 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="RDLogo.ico" />
+    <Content Include="RDLogo.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

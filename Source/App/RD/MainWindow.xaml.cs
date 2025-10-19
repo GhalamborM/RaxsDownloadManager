@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using System.Windows.Forms;
 
 namespace RD;
 
@@ -16,6 +17,8 @@ public partial class MainWindow : Window
     private readonly IDataPersistenceService _dataPersistenceService;
     private bool _isLoaded = false;
     private DispatcherTimer? _saveTimer;
+    private NotifyIcon? _notifyIcon;
+    private bool _isExiting = false;
 
     public MainWindow()
     {
@@ -23,9 +26,49 @@ public partial class MainWindow : Window
         _dataPersistenceService = App.ServiceProvider.GetRequiredService<IDataPersistenceService>();
         DataContext = App.ServiceProvider.GetRequiredService<MainViewModel>();
         
+        InitializeNotifyIcon();
+        
         Loaded += MainWindow_Loaded;
         Closing += MainWindow_Closing;
         SizeChanged += MainWindow_SizeChanged;
+    }
+
+    private void InitializeNotifyIcon()
+    {
+        _notifyIcon = new NotifyIcon
+        {
+            Icon = new Icon("RDLogo.ico"),
+            Visible = true,
+            Text = "Raxs Download Manager"
+        };
+
+        _notifyIcon.DoubleClick += NotifyIcon_DoubleClick;
+
+        var contextMenu = new ContextMenuStrip();
+        contextMenu.Items.Add("Show", null, (s, e) => ShowWindow());
+        contextMenu.Items.Add(new ToolStripSeparator());
+        contextMenu.Items.Add("Exit", null, (s, e) => ExitApplication());
+        
+        _notifyIcon.ContextMenuStrip = contextMenu;
+    }
+
+    private void NotifyIcon_DoubleClick(object? sender, EventArgs e)
+    {
+        ShowWindow();
+    }
+
+    private void ShowWindow()
+    {
+        Show();
+        WindowState = WindowState.Normal;
+        Activate();
+        _notifyIcon!.Visible = false;
+    }
+
+    private void ExitApplication()
+    {
+        _isExiting = true;
+        System.Windows.Application.Current.Shutdown();
     }
 
     private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -182,6 +225,13 @@ public partial class MainWindow : Window
 
     private async void MainWindow_Closing(object? sender, CancelEventArgs e)
     {
+        if (!_isExiting)
+        {
+            e.Cancel = true;
+            Hide();
+            return;
+        }
+
         _saveTimer?.Stop();
         await SaveUISettingsAsync();
     }
@@ -198,6 +248,13 @@ public partial class MainWindow : Window
         if (DataContext is MainViewModel viewModel)
         {
             viewModel.Cleanup();
+        }
+
+        if (_notifyIcon != null)
+        {
+            _notifyIcon.Visible = false;
+            _notifyIcon.Dispose();
+            _notifyIcon = null;
         }
     }
 }
