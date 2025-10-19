@@ -8,4 +8,6 @@ public interface IDataPersistenceService
     Task<List<DownloadItem>> LoadDownloadsAsync();
     Task SaveOptionsAsync(DownloadManagerOptions options);
     Task<DownloadManagerOptions> LoadOptionsAsync();
+    Task SaveUISettingsAsync(UISettings settings);
+    Task<UISettings> LoadUISettingsAsync();
 }

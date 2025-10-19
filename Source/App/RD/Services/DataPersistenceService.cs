@@ -8,6 +8,7 @@ public class DataPersistenceService : IDataPersistenceService
     private readonly string _dataDirectory;
     private readonly string _downloadsFile;
     private readonly string _optionsFile;
+    private readonly string _uiSettingsFile;
     private readonly JsonSerializerOptions _jsonWriteOptions = new()
     {
         WriteIndented = true,
@@ -22,6 +23,7 @@ public class DataPersistenceService : IDataPersistenceService
         _dataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "RD", "Ramtin");
         _downloadsFile = Path.Combine(_dataDirectory, "downloads.json");
         _optionsFile = Path.Combine(_dataDirectory, "options.json");
+        _uiSettingsFile = Path.Combine(_dataDirectory, "ui-settings.json");
 
         Directory.CreateDirectory(_dataDirectory);
     }
@@ -83,6 +85,36 @@ public class DataPersistenceService : IDataPersistenceService
         {
             System.Diagnostics.Debug.WriteLine($"Failed to load options: {ex.Message}");
             return new DownloadManagerOptions();
+        }
+    }
+
+    public async Task SaveUISettingsAsync(UISettings settings)
+    {
+        try
+        {
+            var json = JsonSerializer.Serialize(settings, _jsonWriteOptions);
+            await File.WriteAllTextAsync(_uiSettingsFile, json);
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Failed to save UI settings: {ex.Message}");
+        }
+    }
+
+    public async Task<UISettings> LoadUISettingsAsync()
+    {
+        try
+        {
+            if (!File.Exists(_uiSettingsFile))
+                return new UISettings();
+
+            var json = await File.ReadAllTextAsync(_uiSettingsFile);
+            return JsonSerializer.Deserialize<UISettings>(json, _jsonReadOptions) ?? new UISettings();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Failed to load UI settings: {ex.Message}");
+            return new UISettings();
         }
     }
 }

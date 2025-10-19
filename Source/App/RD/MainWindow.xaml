@@ -184,7 +184,8 @@
                     </Border>
 
                     <!-- Downloads DataGrid -->
-                    <DataGrid Grid.Row="1" 
+                    <DataGrid x:Name="DownloadsDataGrid"
+                             Grid.Row="1" 
                              ItemsSource="{Binding DownloadsView}"
                              SelectedItem="{Binding SelectedDownload}"
                              AutoGenerateColumns="False"
