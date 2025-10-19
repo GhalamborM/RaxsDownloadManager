@@ -40,6 +40,9 @@ public partial class App : System.Windows.Application
         // Start the host
         await _host.StartAsync();
 
+        // Apply startup setting from saved options
+        await ApplyStartupSettingAsync();
+
         base.OnStartup(e);
     }
 
@@ -96,6 +99,22 @@ public partial class App : System.Windows.Application
         services.AddTransient<TaskSelectionWindow>();
         services.AddTransient<UpdateWindow>();
         services.AddTransient<EditCategoryWindow>();
+    }
+
+    private async Task ApplyStartupSettingAsync()
+    {
+        try
+        {
+            var dataPersistenceService = ServiceProvider.GetRequiredService<IDataPersistenceService>();
+            var options = await dataPersistenceService.LoadOptionsAsync();
+            
+            // Sync the actual startup status with the saved setting
+            StartupManager.SetStartup(options.RunAtStartup);
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Failed to apply startup setting: {ex.Message}");
+        }
     }
 
     protected override async void OnExit(ExitEventArgs e)

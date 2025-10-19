@@ -19,4 +19,5 @@ public static class OptionsUtils
     public const string CategoryEnabled = "OptionsWindow.CategoryEnabled";
     public const string ResetCategoriesToDefaults = "OptionsWindow.ResetCategoriesToDefaults";
     public const string CategoryDescription = "OptionsWindow.CategoryDescription";
+    public const string RunAtStartup = "OptionsWindow.RunAtStartup";
 }

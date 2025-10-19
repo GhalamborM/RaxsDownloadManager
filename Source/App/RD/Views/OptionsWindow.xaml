@@ -46,6 +46,7 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -81,6 +82,12 @@
                                 Style="{StaticResource FluentSecondaryButtonStyle}"
                                 Command="{Binding BrowseTempDirectoryCommand}"
                                 VerticalAlignment="Bottom"/>
+                            
+                            <CheckBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+                                      Content="{loc:Localize OptionsWindow.RunAtStartup}" 
+                                      IsChecked="{Binding RunAtStartup}" 
+                                      Margin="0,8,0,0"
+                                      FontWeight="SemiBold"/>
                         </Grid>
                     </StackPanel>
                 </Border>

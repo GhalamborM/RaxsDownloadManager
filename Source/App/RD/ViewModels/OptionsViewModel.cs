@@ -56,6 +56,9 @@ public partial class OptionsViewModel : ObservableObject
     private bool _useCategorization;
 
     [ObservableProperty]
+    private bool _runAtStartup;
+
+    [ObservableProperty]
     private ObservableCollection<FileCategory> _fileCategories = new();
 
     [ObservableProperty]
@@ -119,7 +122,8 @@ public partial class OptionsViewModel : ObservableObject
                 CleanupTempFilesOnSuccess = CleanupTempFilesOnSuccess,
                 CleanupTempFilesOnFailure = CleanupTempFilesOnFailure,
                 UseCategorization = UseCategorization,
-                FileCategories = FileCategories.ToList()
+                FileCategories = FileCategories.ToList(),
+                RunAtStartup = RunAtStartup
             };
 
             // Validate categories before saving
@@ -127,6 +131,15 @@ public partial class OptionsViewModel : ObservableObject
 
             await _dataPersistenceService.SaveOptionsAsync(options);
             _originalOptions = options;
+
+            // Apply startup setting
+            if (!StartupManager.SetStartup(RunAtStartup))
+            {
+                CustomMessageBox.Show(
+                    "Failed to update Windows startup settings. Please check application permissions.",
+                    MessageUtils.Warning,
+                    MessageBoxType.Warning);
+            }
         }
         catch (Exception ex)
         {
@@ -291,6 +304,7 @@ public partial class OptionsViewModel : ObservableObject
         CleanupTempFilesOnSuccess = options.CleanupTempFilesOnSuccess;
         CleanupTempFilesOnFailure = options.CleanupTempFilesOnFailure;
         UseCategorization = options.UseCategorization;
+        RunAtStartup = options.RunAtStartup;
 
         FileCategories.Clear();
         foreach (var category in options.FileCategories)

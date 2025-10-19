@@ -105,7 +105,8 @@
     "CategoryDescription": "When enabled, files will be automatically saved to subfolders based on their file extensions.",
     "CreateCategory": "Create category",
     "EditCategory": "Edit category",
-    "DeleteCategory": "Delete category"
+    "DeleteCategory": "Delete category",
+    "RunAtStartup": "Run at Windows startup"
   },
   "FileCategories": {
     "General": "General",

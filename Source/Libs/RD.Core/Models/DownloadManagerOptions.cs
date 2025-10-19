@@ -16,4 +16,6 @@ public class DownloadManagerOptions
     
     public bool UseCategorization { get; set; } = true;
     public List<FileCategory> FileCategories { get; set; } = FileCategoryDefaults.GetDefaultCategories();
+    
+    public bool RunAtStartup { get; set; } = true;
 }
